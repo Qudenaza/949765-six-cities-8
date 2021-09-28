@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Олег Васин](https://up.htmlacademy.ru/react/8/user/949765).
-* Наставник: `Неизвестно`.
+* Наставник: [Rail Sakhaviev](https://htmlacademy.ru/profile/id1331891).
 
 ---
 
