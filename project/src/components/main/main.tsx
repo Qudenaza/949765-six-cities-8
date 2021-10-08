@@ -1,8 +1,13 @@
-import PlaceCard from '../place-card/place-card';
+import OfferList from '../offer-list/offer-list';
 import Header from '../header/header';
-import { AppMainProps } from '../../types/types';
+import { Offer } from '../../types/types';
 
-function Main({rentCount}: AppMainProps): JSX.Element {
+type Props = {
+  rentCount: number,
+  offers: Offer[],
+};
+
+function Main({rentCount, offers}: Props): JSX.Element {
   return (
     <>
       <Header />
@@ -65,7 +70,7 @@ function Main({rentCount}: AppMainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {[...Array(5)].map(() => <PlaceCard key={Math.random()} />)}
+                <OfferList offers={offers}/>
               </div>
             </section>
             <div className="cities__right-section">
