@@ -1,14 +1,10 @@
-import { RouteProps } from 'react-router-dom';
-import { AuthorizationStatus } from '../const';
-
-export type PrivateRouteProps = RouteProps & {
-  authorizationStatus: AuthorizationStatus;
-}
-
-export type AppProps = {
-  rentCount: number,
-};
-
-export type AppMainProps = {
-  rentCount: number,
+export type Offer = {
+  id: number,
+  previewImage: string,
+  isFavorite: boolean,
+  isPremium: boolean,
+  price: number,
+  title: string,
+  type: string | string[],
+  rating: number,
 };
