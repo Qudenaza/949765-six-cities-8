@@ -15,7 +15,7 @@ function ReviewForm(): JSX.Element {
     return {
       rating,
       review,
-    }
+    };
   };
 
   const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
