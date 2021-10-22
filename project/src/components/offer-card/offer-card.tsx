@@ -4,16 +4,16 @@ import { Offer } from '../../types/types';
 
 type Props = {
   offer: Offer,
-  onMouseHover?: (id: number) => void,
+  onMouseEnter?: (id: number) => void,
 }
 
-function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, onMouseHover}: Props): JSX.Element {
+function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, onMouseEnter}: Props): JSX.Element {
 
   const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
 
-    if (onMouseHover) {
-      onMouseHover(+id);
+    if (onMouseEnter) {
+      onMouseEnter(+id);
     }
   };
 

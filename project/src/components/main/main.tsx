@@ -13,7 +13,7 @@ type Props = {
 function Main({rentCount, offers}: Props): JSX.Element {
   const [activeCardId, setActiveCardId] = useState(+offers[0].id);
 
-  const offerCardHoverHandler = (id: number) => {
+  const handleOfferMouseEnter = (id: number) => {
     setActiveCardId(id);
   };
 
@@ -78,7 +78,7 @@ function Main({rentCount, offers}: Props): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OfferList offers={offers} onMouseHover={offerCardHoverHandler}/>
+              <OfferList offers={offers} onMouseEnter={handleOfferMouseEnter}/>
             </section>
             <div className="cities__right-section">
               <Map city={CITY} offers={offers} selectedPoint={activeCardId}/>

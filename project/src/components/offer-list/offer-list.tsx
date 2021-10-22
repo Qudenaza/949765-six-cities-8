@@ -3,18 +3,18 @@ import { Offer } from '../../types/types';
 
 type Props = {
   offers: Offer[],
-  onMouseHover: (id: number) => void,
+  onMouseEnter: (id: number) => void,
 }
 
-function OfferList({offers, onMouseHover}: Props): JSX.Element {
+function OfferList({offers, onMouseEnter}: Props): JSX.Element {
 
-  const offerCardHoverHandler = (id: number) => {
-    onMouseHover(id);
+  const handleOfferMouseEnter = (id: number) => {
+    onMouseEnter(id);
   };
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <OfferCard key={offer.id} offer={offer} onMouseHover={offerCardHoverHandler}/>)}
+      {offers.map((offer) => <OfferCard key={offer.id} offer={offer} onMouseEnter={handleOfferMouseEnter}/>)}
     </div>
   );
 }
