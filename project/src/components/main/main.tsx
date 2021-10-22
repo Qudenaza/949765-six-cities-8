@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import OfferList from '../offer-list/offer-list';
+import Map from '../map/map';
 import Header from '../header/header';
 import { Offer } from '../../types/types';
+import { CITY } from '../../mocks/city';
 
 type Props = {
   rentCount: number,
@@ -8,6 +11,12 @@ type Props = {
 };
 
 function Main({rentCount, offers}: Props): JSX.Element {
+  const [activeCardId, setActiveCardId] = useState(+offers[0].id);
+
+  const offerCardHoverHandler = (id: number) => {
+    setActiveCardId(id);
+  };
+
   return (
     <>
       <Header />
@@ -69,12 +78,10 @@ function Main({rentCount, offers}: Props): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={offers}/>
-              </div>
+              <OfferList offers={offers} onMouseHover={offerCardHoverHandler}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={CITY} offers={offers} selectedPoint={activeCardId}/>
             </div>
           </div>
         </div>

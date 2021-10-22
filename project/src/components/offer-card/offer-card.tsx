@@ -1,14 +1,24 @@
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-
 import { Offer } from '../../types/types';
 
 type Props = {
   offer: Offer,
+  onMouseHover?: (id: number) => void,
 }
 
-function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}}: Props): JSX.Element {
+function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, onMouseHover}: Props): JSX.Element {
+
+  const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+
+    if (onMouseHover) {
+      onMouseHover(+id);
+    }
+  };
+
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card" onMouseEnter={mouseEnterHandler}>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="./">
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />

@@ -8,6 +8,10 @@ export const offers = [
     title: 'Big & comfortable house at great location',
     type: 'house',
     rating: 3,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+    },
   },
   {
     id: 1,
@@ -18,6 +22,10 @@ export const offers = [
     title: 'Beautiful & luxurious apartment at great location',
     type: 'apartment',
     rating: 3.9,
+    location: {
+      latitude: 52.369553943508,
+      longitude: 4.85309666406198,
+    },
   },
   {
     id: 2,
@@ -28,6 +36,10 @@ export const offers = [
     title: 'Gorgeous & cozy room in center of the city',
     type: 'room',
     rating: 4.2,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+    },
   },
   {
     id: 3,
@@ -38,5 +50,9 @@ export const offers = [
     title: 'Spacious & modest hotel away from the city',
     type: ['hotel', 'room'],
     rating: 4.8,
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+    },
   },
 ];
