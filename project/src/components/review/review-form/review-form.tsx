@@ -6,7 +6,7 @@ type UserReview = {
   review: string,
 }
 
-const RATING = [
+const ratings = [
   {
     id: 5,
     title: 'perfect',
@@ -58,7 +58,7 @@ function ReviewForm(): JSX.Element {
     <form className="reviews__form form" action="#" method="post" onSubmit={formSubmitHandler}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating" onChange={ratingChangeHandler}>
-        {RATING.map((data) => <ReviewRating key={data.id} ratingData={data}/>)}
+        {ratings.map((data) => <ReviewRating key={data.id} ratingData={data}/>)}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onChange={reviewChangeHandler}></textarea>
       <div className="reviews__button-wrapper">
