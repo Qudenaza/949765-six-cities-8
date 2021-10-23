@@ -4,10 +4,11 @@ import { Offer } from '../../types/types';
 
 type Props = {
   offer: Offer,
+  isNearby?: boolean,
   onMouseEnter?: (id: number) => void,
 }
 
-function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, onMouseEnter}: Props): JSX.Element {
+function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, isNearby, onMouseEnter}: Props): JSX.Element {
 
   const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -18,8 +19,8 @@ function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, 
   };
 
   return (
-    <article className="cities__place-card place-card" onMouseEnter={mouseEnterHandler}>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+    <article className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'} onMouseEnter={mouseEnterHandler}>
+      <div className={isNearby ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
         <a href="./">
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </a>

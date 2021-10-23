@@ -3,18 +3,23 @@ import { Offer } from '../../types/types';
 
 type Props = {
   offers: Offer[],
-  onMouseEnter: (id: number) => void,
+  isNearby?: boolean,
+  onMouseEnter?: (id: number) => void,
 }
 
-function OfferList({offers, onMouseEnter}: Props): JSX.Element {
+function OfferList({offers, isNearby, onMouseEnter}: Props): JSX.Element {
 
   const handleOfferMouseEnter = (id: number) => {
-    onMouseEnter(id);
+    if (onMouseEnter) {
+      onMouseEnter(id);
+    }
   };
 
+  const className = isNearby ? 'near-places__list places__list' : 'cities__places-list places__list tabs__content';
+
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <OfferCard key={offer.id} offer={offer} onMouseEnter={handleOfferMouseEnter}/>)}
+    <div className={className}>
+      {offers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby onMouseEnter={handleOfferMouseEnter}/>)}
     </div>
   );
 }

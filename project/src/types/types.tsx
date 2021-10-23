@@ -7,10 +7,7 @@ export type Offer = {
   title: string,
   type: string | string[],
   rating: number,
-  location: {
-    latitude: number,
-    longitude: number,
-  }
+  location: Point,
 };
 
 export type City = {
