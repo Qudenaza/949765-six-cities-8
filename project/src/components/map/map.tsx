@@ -40,7 +40,7 @@ function Map({ city, offers, selectedPoint }: Props): JSX.Element {
           .addTo(map);
       });
     }
-  }, [map, offers, selectedPoint]);
+  }, [map, offers, selectedPoint, city]);
 
   return (
     <section

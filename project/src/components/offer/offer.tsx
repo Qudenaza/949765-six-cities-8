@@ -3,7 +3,7 @@ import Header from '../header/header';
 import Review from '../review/review';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
-import { CITY } from '../../mocks/city';
+import { cities } from '../../const';
 import { offers } from '../../mocks/offers';
 
 function Offer(): JSX.Element {
@@ -138,7 +138,7 @@ function Offer(): JSX.Element {
               <Review />
             </div>
           </div>
-          <Map city={CITY} offers={offers.slice(0, 3)} selectedPoint={activeCardId}/>
+          <Map city={cities[0]} offers={offers.slice(0, 3)} selectedPoint={activeCardId}/>
         </section>
         <div className="container">
           <section className="near-places places">
