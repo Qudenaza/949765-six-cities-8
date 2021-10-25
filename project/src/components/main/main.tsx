@@ -1,20 +1,36 @@
 import { useState } from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
+import { changeCity } from '../../store/action';
+import CityList from '../city-list/city-list';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import Header from '../header/header';
-import { Offer } from '../../types/types';
-import { CITY } from '../../mocks/city';
+import { State } from '../../types/state';
+import { City as CityType } from '../../types/types';
 
-type Props = {
-  rentCount: number,
-  offers: Offer[],
-};
+const mapStateToProps = ({city, offers}: State) => ({
+  city,
+  offers,
+});
 
-function Main({rentCount, offers}: Props): JSX.Element {
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+  onCityChange: changeCity,
+}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
   const [activeCardId, setActiveCardId] = useState(+offers[0].id);
 
   const handleOfferMouseEnter = (id: number) => {
     setActiveCardId(id);
+  };
+
+  const handleCityChange = (location: CityType) => {
+    onCityChange(location);
   };
 
   return (
@@ -24,45 +40,14 @@ function Main({rentCount, offers}: Props): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="./">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="./">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="./">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="./">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="./">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="./">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CityList city={city.title} onCityChange={handleCityChange}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{rentCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in {city.title}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -81,7 +66,7 @@ function Main({rentCount, offers}: Props): JSX.Element {
               <OfferList offers={offers} onMouseEnter={handleOfferMouseEnter}/>
             </section>
             <div className="cities__right-section">
-              <Map city={CITY} offers={offers} selectedPoint={activeCardId}/>
+              <Map city={city} offers={offers} selectedPoint={activeCardId}/>
             </div>
           </div>
         </div>
@@ -90,4 +75,5 @@ function Main({rentCount, offers}: Props): JSX.Element {
   );
 }
 
-export default Main;
+export { Main };
+export default connector(Main);

@@ -9,16 +9,15 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer as OfferType } from '../../types/types';
 
 type Props = {
-  rentCount: number,
   offers: OfferType[],
 }
 
-function App({rentCount, offers}: Props): JSX.Element {
+function App({offers}: Props): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route path={AppRoute.Root} exact>
-          <Main rentCount={rentCount} offers={offers}/>
+          <Main />
         </Route>
         <Route path={AppRoute.SignIn} exact>
           <SignIn />
