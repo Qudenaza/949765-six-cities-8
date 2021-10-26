@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 import { changeCity } from '../../store/action';
+import Sorting from '../sorting/sorting';
 import CityList from '../city-list/city-list';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import Header from '../header/header';
 import { State } from '../../types/state';
-import { City as CityType } from '../../types/types';
+import { City } from '../../types/types';
 
 const mapStateToProps = ({city, offers}: State) => ({
   city,
@@ -24,13 +25,26 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
   const [activeCardId, setActiveCardId] = useState(+offers[0].id);
+  const [selectedSortingType, setSelectedSortingType] = useState({
+    title: 'Popular',
+    key: 'popular',
+  });
 
   const handleOfferMouseEnter = (id: number) => {
     setActiveCardId(id);
   };
 
-  const handleCityChange = (location: CityType) => {
+  const handleCityChange = (location: City) => {
     onCityChange(location);
+  };
+
+  const sortingTypeChangeHandler = (evt: MouseEvent) => {
+    if (evt.target instanceof HTMLLIElement) {
+      setSelectedSortingType({
+        title: evt.target.textContent || 'Popular',
+        key: evt.target.dataset.type || 'popular',
+      });
+    }
   };
 
   return (
@@ -48,22 +62,8 @@ function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in {city.title}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <OfferList offers={offers} onMouseEnter={handleOfferMouseEnter}/>
+              <Sorting sortBy={selectedSortingType.title} onSortingTypeChange={sortingTypeChangeHandler}/>
+              <OfferList sortBy={selectedSortingType.key} offers={offers} onMouseEnter={handleOfferMouseEnter}/>
             </section>
             <div className="cities__right-section">
               <Map city={city} offers={offers} selectedPoint={activeCardId}/>
