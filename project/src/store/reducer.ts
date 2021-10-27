@@ -10,6 +10,7 @@ const initialState = {
     zoom: 10,
   },
   offers,
+  selectedSortingType: 'popular',
 };
 
 const reducer = (state: State = initialState, action: Actions): State => {
@@ -18,6 +19,8 @@ const reducer = (state: State = initialState, action: Actions): State => {
       return { ...state, city: action.payload };
     case ActionType.SetOffers:
       return { ...state, offers: action.payload };
+    case ActionType.ChangeSelectedSortingType:
+      return { ...state, selectedSortingType: action.payload };
     default:
       return state;
   }

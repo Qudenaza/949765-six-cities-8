@@ -26,5 +26,5 @@ export type Sorting = {
   [popular: string]: (offers: Offer[]) => Offer[],
   'low': (offers: Offer[]) => Offer[],
   'high': (offers: Offer[]) => Offer[],
-  'top rated': (offers: Offer[]) => Offer[],
+  'rating': (offers: Offer[]) => Offer[],
 }

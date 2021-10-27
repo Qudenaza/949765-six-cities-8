@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 import { changeCity } from '../../store/action';
@@ -10,9 +10,10 @@ import Header from '../header/header';
 import { State } from '../../types/state';
 import { City } from '../../types/types';
 
-const mapStateToProps = ({city, offers}: State) => ({
+const mapStateToProps = ({city, offers, selectedSortingType}: State) => ({
   city,
   offers,
+  selectedSortingType,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
@@ -23,12 +24,8 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
+function Main({city, offers, selectedSortingType, onCityChange}: PropsFromRedux): JSX.Element {
   const [activeCardId, setActiveCardId] = useState(+offers[0].id);
-  const [selectedSortingType, setSelectedSortingType] = useState({
-    title: 'Popular',
-    key: 'popular',
-  });
 
   const handleOfferMouseEnter = (id: number) => {
     setActiveCardId(id);
@@ -38,14 +35,14 @@ function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
     onCityChange(location);
   };
 
-  const sortingTypeChangeHandler = (evt: MouseEvent) => {
-    if (evt.target instanceof HTMLLIElement) {
-      setSelectedSortingType({
-        title: evt.target.textContent || 'Popular',
-        key: evt.target.dataset.type || 'popular',
-      });
-    }
-  };
+  // const sortingTypeChangeHandler = (evt: MouseEvent) => {
+  //   if (evt.target instanceof HTMLLIElement) {
+  //     setSelectedSortingType({
+  //       title: evt.target.textContent || 'Popular',
+  //       key: evt.target.dataset.type || 'popular',
+  //     });
+  //   }
+  // };
 
   return (
     <>
@@ -62,8 +59,8 @@ function Main({city, offers, onCityChange}: PropsFromRedux): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in {city.title}</b>
-              <Sorting sortBy={selectedSortingType.title} onSortingTypeChange={sortingTypeChangeHandler}/>
-              <OfferList sortBy={selectedSortingType.key} offers={offers} onMouseEnter={handleOfferMouseEnter}/>
+              <Sorting />
+              <OfferList offers={offers} sortBy={selectedSortingType} onMouseEnter={handleOfferMouseEnter}/>
             </section>
             <div className="cities__right-section">
               <Map city={city} offers={offers} selectedPoint={activeCardId}/>

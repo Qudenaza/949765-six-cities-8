@@ -13,6 +13,26 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+
+export const Sorting = [
+  {
+    key: 'popular',
+    title: 'Popular',
+  },
+  {
+    key: 'low',
+    title: 'Price: low to high',
+  },
+  {
+    key: 'high',
+    title: 'Price: high to low',
+  },
+  {
+    key: 'rating',
+    title: 'Top rated first',
+  },
+];
+
 export const cities: City[] = [
   {
     title: 'Paris',
