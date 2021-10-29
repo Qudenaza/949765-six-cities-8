@@ -20,10 +20,10 @@ export type Offer = {
 export type ServerOffer = {
   city: City,
   id: number,
-  is_favorite: boolean,
-  preview_image: string,
-  is_premium: boolean,
-  max_adults: string,
+  'is_favorite': boolean,
+  'preview_image': string,
+  'is_premium': boolean,
+  'max_adults': string,
   price: number,
   title: string,
   type: string | string[],
@@ -55,8 +55,8 @@ export type ClientHost = {
 export type ServerHost = {
   id: number,
   name: string,
-  is_pro: boolean,
-  avatar_url: string,
+  'is_pro': boolean,
+  'avatar_url': string,
 }
 
 export type Point = {
