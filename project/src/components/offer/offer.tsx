@@ -1,12 +1,21 @@
 import { useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import Header from '../header/header';
 import Review from '../review/review';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import { cities } from '../../const';
-import { offers } from '../../mocks/offers';
+import { State } from '../../types/state';
 
-function Offer(): JSX.Element {
+const mapStateToProps = ({ offers }: State) => ({
+  offers,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Offer({ offers }: PropsFromRedux): JSX.Element {
   const [activeCardId, setActiveCardId] = useState(+offers[0].id);
 
   const handleOfferMouseEnter = (id: number) => {
@@ -151,4 +160,5 @@ function Offer(): JSX.Element {
   );
 }
 
-export default Offer;
+export { Offer };
+export default connector(Offer);

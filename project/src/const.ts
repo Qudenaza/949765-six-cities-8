@@ -7,14 +7,20 @@ export enum AppRoute {
   Offer = '/offer/:id'
 }
 
+export enum APIRoute {
+  Offers = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+  Favorites = '/favorites',
+}
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
 
-
-export const Sorting = [
+export const sortingTypes = [
   {
     key: 'popular',
     title: 'Popular',
@@ -35,42 +41,55 @@ export const Sorting = [
 
 export const cities: City[] = [
   {
-    title: 'Paris',
-    lat: 48.864716,
-    lng: 2.349014,
-    zoom: 10,
+    name: 'Paris',
+    location: {
+      latitude: 48.864716,
+      longitude: 2.349014,
+      zoom: 13,
+    },
   },
   {
-    title: 'Cologne',
-    lat: 50.935173,
-    lng: 6.953101,
-    zoom: 10,
+    name: 'Cologne',
+    location: {
+      latitude: 50.938361,
+      longitude: 6.959974,
+      zoom: 13,
+    },
   },
   {
-    title: 'Brussels',
-    lat: 50.850346,
-    lng: 4.351721,
-    zoom: 10,
+    name: 'Brussels',
+    location: {
+      latitude: 50.846557,
+      longitude: 4.351697,
+      zoom: 13,
+    },
   },
   {
-    title: 'Amsterdam',
-    lat: 52.3909553943508,
-    lng: 4.929309666406198,
-    zoom: 10,
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.37454,
+      longitude: 4.897976,
+      zoom: 13,
+    },
   },
   {
-    title: 'Hamburg',
-    lat: 53.551086,
-    lng: 9.993682,
-    zoom: 10,
+    name: 'Hamburg',
+    location: {
+      latitude: 53.550341,
+      longitude: 10.000654,
+      zoom: 13,
+    },
   },
   {
-    title: 'Dusseldorf',
-    lat: 51.227741,
-    lng: 6.773456,
-    zoom: 10,
+    name: 'Dusseldorf',
+    location: {
+      latitude: 51.225402,
+      longitude: 6.776314,
+      zoom: 13,
+    },
   },
 ];
+
 
 export const URL_MARKER_DEFAULT =
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';

@@ -4,7 +4,7 @@ import { Offer } from '../../types/types';
 
 type Props = {
   offer: Offer,
-  isNearby?: boolean,
+  isNearby: boolean,
   onMouseEnter?: (id: number) => void,
 }
 
@@ -22,7 +22,7 @@ function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, 
     <article className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'} onMouseEnter={mouseEnterHandler}>
       <div className={isNearby ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
         <Link to={`/offer/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place"/>
         </Link>
       </div>
       <div className="place-card__info">

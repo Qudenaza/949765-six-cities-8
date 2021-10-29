@@ -4,4 +4,5 @@ export type State = {
   city: City,
   offers: Offer[],
   selectedSortingType: string,
+  isDataLoaded: boolean,
 };

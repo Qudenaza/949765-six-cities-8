@@ -1,4 +1,4 @@
-import { ActionType, ChangeCityAction, SetOffersAction, ChangeSelectedSortingTypeAction } from '../types/actions';
+import { ActionType, ChangeCityAction, LoadOffersAction, ChangeSelectedSortingTypeAction } from '../types/action';
 import { Offer, City } from '../types/types';
 
 export const changeCity = (value: City): ChangeCityAction => ({
@@ -6,8 +6,8 @@ export const changeCity = (value: City): ChangeCityAction => ({
   payload: value,
 });
 
-export const setOffers = (value: Offer[]): SetOffersAction => ({
-  type: ActionType.SetOffers,
+export const loadOffers = (value: Offer[]): LoadOffersAction => ({
+  type: ActionType.LoadOffers,
   payload: value,
 });
 

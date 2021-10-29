@@ -1,3 +1,4 @@
+import { connect, ConnectedProps } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import Main from '../main/main';
@@ -5,14 +6,25 @@ import SignIn from '../sign-in/sign-in';
 import Favorites from '../favorites/favorites';
 import Offer from '../offer/offer';
 import NotFoundScreen from '../not-found-screen/not-fount-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { Offer as OfferType } from '../../types/types';
+import { State } from '../../types/state';
 
-type Props = {
-  offers: OfferType[],
-}
+const mapStateToProps = ({ isDataLoaded }: State) => ({
+  isDataLoaded,
+});
 
-function App({offers}: Props): JSX.Element {
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function App({isDataLoaded}: PropsFromRedux): JSX.Element {
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Switch>
@@ -23,7 +35,7 @@ function App({offers}: Props): JSX.Element {
           <SignIn />
         </Route>
         <PrivateRoute path={AppRoute.Favorites} authorizationStatus={AuthorizationStatus.NoAuth} exact>
-          <Favorites offers={offers}/>
+          <Favorites offers={[]}/>
         </PrivateRoute>
         <Route path={AppRoute.Offer} exact>
           <Offer />
@@ -36,4 +48,5 @@ function App({offers}: Props): JSX.Element {
   );
 }
 
-export default App;
+export { App };
+export default connector(App);

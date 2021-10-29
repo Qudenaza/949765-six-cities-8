@@ -10,7 +10,7 @@ type Props = {
   onMouseEnter?: (id: number) => void,
 }
 
-function OfferList({offers, sortBy, isNearby, onMouseEnter}: Props): JSX.Element {
+function OfferList({offers, sortBy, isNearby = false, onMouseEnter}: Props): JSX.Element {
   const [sortedOffers, setSortedOffers] = useState(offers);
 
   const handleOfferMouseEnter = (id: number) => {
@@ -30,7 +30,7 @@ function OfferList({offers, sortBy, isNearby, onMouseEnter}: Props): JSX.Element
 
   return (
     <div className={className}>
-      {sortedOffers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby onMouseEnter={handleOfferMouseEnter}/>)}
+      {sortedOffers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby={isNearby} onMouseEnter={handleOfferMouseEnter}/>)}
     </div>
   );
 }

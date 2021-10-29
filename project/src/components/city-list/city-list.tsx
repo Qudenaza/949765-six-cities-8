@@ -17,7 +17,7 @@ function CityList({city, onCityChange}: Props): JSX.Element {
 
   return (
     <ul className="locations__list tabs__list">
-      {cities.map((location) => <City activeCity={city} city={location} key={location.title} handleClick={handleCityChange}/>)}
+      {cities.map((location) => <City activeCity={city} city={location} key={location.name} handleClick={handleCityChange}/>)}
     </ul>
   );
 }
