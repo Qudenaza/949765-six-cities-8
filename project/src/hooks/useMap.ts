@@ -9,10 +9,10 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map |
     if (mapRef.current !== null && map === null) {
       const instance = new Map(mapRef.current, {
         center: {
-          lat: city.lat,
-          lng: city.lng,
+          lat: city.location.latitude,
+          lng: city.location.longitude,
         },
-        zoom: 10,
+        zoom: city.location.zoom,
       });
 
       const layer = new TileLayer(
@@ -29,7 +29,7 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map |
     }
 
     if (map) {
-      map.flyTo([city.lat, city.lng], city.zoom);
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
     }
   }, [mapRef, map, city]);
 
