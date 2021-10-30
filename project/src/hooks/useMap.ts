@@ -27,10 +27,6 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map |
 
       setMap(instance);
     }
-
-    if (map) {
-      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
-    }
   }, [mapRef, map, city]);
 
   return map;

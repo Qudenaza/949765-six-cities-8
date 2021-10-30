@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import useMap from '../../hooks/useMap';
 import { City, Offer } from '../../types/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
@@ -24,12 +24,19 @@ const currentCustomIcon = new Icon({
 });
 
 function Map({ city, offers, selectedPoint }: Props): JSX.Element {
+  const [markers, setMarkers] = useState<Marker[] | []>([]);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
     if (map) {
-      offers.forEach((offer) => {
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
+
+      map.once('zoomend', () => {
+        markers.forEach((marker) => marker.remove());
+      });
+
+      setMarkers(offers.map((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
           lng: offer.location.longitude,
@@ -38,8 +45,12 @@ function Map({ city, offers, selectedPoint }: Props): JSX.Element {
         marker
           .setIcon(offer.id === selectedPoint ? currentCustomIcon : defaultCustomIcon)
           .addTo(map);
-      });
+
+        return marker;
+      }));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, offers, selectedPoint, city]);
 
   return (
