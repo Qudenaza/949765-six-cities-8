@@ -1,4 +1,4 @@
-import { Offer as ClientOffer, ServerOffer } from './types/types';
+import { ServerAuthInfo, AuthInfo, Offer as ClientOffer, ServerOffer } from './types/types';
 
 export const adaptOfferToClient = (offer: ServerOffer): ClientOffer => ({
   bedrooms: offer.bedrooms,
@@ -24,3 +24,11 @@ export const adaptOfferToClient = (offer: ServerOffer): ClientOffer => ({
   type: offer.type,
 });
 
+export const adaptAuthInfoToClient = (data: ServerAuthInfo): AuthInfo => ({
+  avatarUrl: data['avatar_url'],
+  email: data.email,
+  id: data.id,
+  isPro: data['is_pro'],
+  name: data.name,
+  token: data.token,
+});
