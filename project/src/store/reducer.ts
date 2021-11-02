@@ -1,5 +1,6 @@
 import { State } from '../types/state';
 import { ActionType, Actions } from '../types/action';
+import { AuthorizationStatus } from '../const';
 
 const initialState = {
   city: {
@@ -13,6 +14,15 @@ const initialState = {
   offers: [],
   selectedSortingType: 'popular',
   isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  authInfo: {
+    avatarUrl: '',
+    email: '',
+    id: 0,
+    isPro: false,
+    name: '',
+    token: '',
+  },
 };
 
 const reducer = (state: State = initialState, action: Actions): State => {
@@ -23,6 +33,12 @@ const reducer = (state: State = initialState, action: Actions): State => {
       return { ...state, offers: action.payload, isDataLoaded: true };
     case ActionType.ChangeSelectedSortingType:
       return { ...state, selectedSortingType: action.payload };
+    case ActionType.RequireAuthorization:
+      return { ...state, authorizationStatus: action.payload };
+    case ActionType.RequireAuthInfo:
+      return { ...state, authInfo: action.payload };
+    case ActionType.RequireLogout:
+      return { ...state, authorizationStatus: AuthorizationStatus.NoAuth, authInfo: initialState.authInfo };
     default:
       return state;
   }

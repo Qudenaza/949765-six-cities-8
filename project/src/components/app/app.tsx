@@ -1,5 +1,5 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
@@ -7,10 +7,11 @@ import Favorites from '../favorites/favorites';
 import Offer from '../offer/offer';
 import NotFoundScreen from '../not-found-screen/not-fount-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import { State } from '../../types/state';
+import browserHistory from '../../browser-history';
 
-const mapStateToProps = ({ isDataLoaded }: State) => ({
+const mapStateToProps = ({ isDataLoaded}: State) => ({
   isDataLoaded,
 });
 
@@ -26,7 +27,7 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route path={AppRoute.Root} exact>
           <Main />
@@ -34,7 +35,7 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
         <Route path={AppRoute.SignIn} exact>
           <SignIn />
         </Route>
-        <PrivateRoute path={AppRoute.Favorites} authorizationStatus={AuthorizationStatus.NoAuth} exact>
+        <PrivateRoute path={AppRoute.Favorites} exact>
           <Favorites offers={[]}/>
         </PrivateRoute>
         <Route path={AppRoute.Offer} exact>

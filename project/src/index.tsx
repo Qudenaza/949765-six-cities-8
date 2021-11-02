@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { createAPI } from './services/api';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createAPI } from './services/api';
 import App from './components/app/app';
 import { reducer } from './store/reducer';
-import { fetchOffersAction} from './store/api-actions';
+import { fetchOffersAction, checkAuthAction } from './store/api-actions';
+import { requireAuthorization } from './store/action';
 import { ThunkAppDispatch } from './types/action';
+import { AuthorizationStatus } from './const';
 
-const api = createAPI();
+const api = createAPI(() => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)));
 
 const store = createStore(
   reducer,
@@ -19,6 +21,7 @@ const store = createStore(
   ),
 );
 
+(store.dispatch as ThunkAppDispatch)(checkAuthAction());
 (store.dispatch as ThunkAppDispatch)(fetchOffersAction());
 
 ReactDOM.render(

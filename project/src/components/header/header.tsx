@@ -1,6 +1,18 @@
 import { Link } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import { State } from '../../types/state';
+import UserBlock from '../user-block/user-block';
 
-function Header(): JSX.Element {
+const mapStateToProps = ({authorizationStatus, authInfo}: State) => ({
+  authorizationStatus,
+  authInfo,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Header({authorizationStatus, authInfo}: PropsFromRedux): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -11,20 +23,7 @@ function Header(): JSX.Element {
             </Link>
           </div>
           <nav className="header__nav">
-            <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <a className="header__nav-link header__nav-link--profile" href="./">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                </a>
-              </li>
-              <li className="header__nav-item">
-                <a className="header__nav-link" href="./">
-                  <span className="header__signout">Sign out</span>
-                </a>
-              </li>
-            </ul>
+            <UserBlock authorizationStatus={authorizationStatus} authInfo={authInfo}/>
           </nav>
         </div>
       </div>
@@ -32,4 +31,5 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export { Header };
+export default connector(Header);

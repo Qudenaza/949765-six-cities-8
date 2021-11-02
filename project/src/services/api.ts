@@ -8,7 +8,9 @@ enum HttpCode {
   Unauthorized = 401,
 }
 
-export const createAPI = (): AxiosInstance => {
+type UnauthorizedCallback = () => void;
+
+export const createAPI = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
@@ -21,7 +23,7 @@ export const createAPI = (): AxiosInstance => {
       const { response } = error;
 
       if (response?.status === HttpCode.Unauthorized) {
-        return false;
+        onUnauthorized();
       }
 
       return Promise.reject(error);
