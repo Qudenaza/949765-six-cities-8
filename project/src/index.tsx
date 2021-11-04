@@ -8,16 +8,18 @@ import { createAPI } from './services/api';
 import App from './components/app/app';
 import { reducer } from './store/reducer';
 import { fetchOffersAction, checkAuthAction } from './store/api-actions';
-import { requireAuthorization } from './store/action';
+import { setAuthorization } from './store/action';
+import { redirect } from './store/middlewares/redirect';
 import { ThunkAppDispatch } from './types/action';
 import { AuthorizationStatus } from './const';
 
-const api = createAPI(() => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)));
+const api = createAPI(() => store.dispatch(setAuthorization(AuthorizationStatus.NoAuth)));
 
 const store = createStore(
   reducer,
   composeWithDevTools(
     applyMiddleware(thunk.withExtraArgument(api)),
+    applyMiddleware(redirect),
   ),
 );
 

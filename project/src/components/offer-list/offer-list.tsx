@@ -8,9 +8,10 @@ type Props = {
   sortBy?: string,
   isNearby?: boolean,
   onMouseEnter?: (id: number) => void,
+  onMouseLeave? : () => void,
 }
 
-function OfferList({offers, sortBy, isNearby = false, onMouseEnter}: Props): JSX.Element {
+function OfferList({offers, sortBy, isNearby = false, onMouseEnter, onMouseLeave}: Props): JSX.Element {
   const [sortedOffers, setSortedOffers] = useState(offers);
 
   const handleOfferMouseEnter = (id: number) => {
@@ -29,7 +30,7 @@ function OfferList({offers, sortBy, isNearby = false, onMouseEnter}: Props): JSX
   const className = isNearby ? 'near-places__list places__list' : 'cities__places-list places__list tabs__content';
 
   return (
-    <div className={className}>
+    <div className={className} onMouseLeave={onMouseLeave}>
       {sortedOffers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby={isNearby} onMouseEnter={handleOfferMouseEnter}/>)}
     </div>
   );

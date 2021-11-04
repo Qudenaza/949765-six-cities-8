@@ -1,12 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { ThunkAppDispatch } from '../../types/action';
 import { AuthData } from '../../types/auth-data';
 import { loginAction } from '../../store/api-actions';
 import { State } from '../../types/state';
-import { AppRoute } from '../../const';
-
 
 const mapStateToProps = ({city}: State) => ({
   city,
@@ -26,8 +23,6 @@ function SignIn({onSubmit, city}: PropsFromRedux ): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const history = useHistory();
-
   const handleEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setEmail(evt.target.value);
   };
@@ -44,8 +39,6 @@ function SignIn({onSubmit, city}: PropsFromRedux ): JSX.Element {
         email: email,
         password: password,
       });
-
-      history.push(AppRoute.Root);
     }
   };
 

@@ -12,6 +12,10 @@ const initialState = {
     },
   },
   offers: [],
+  nearByOffers: [],
+  favoriteOffers: [],
+  comments: [],
+  offer: null,
   selectedSortingType: 'popular',
   isDataLoaded: false,
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -31,13 +35,19 @@ const reducer = (state: State = initialState, action: Actions): State => {
       return { ...state, city: action.payload };
     case ActionType.LoadOffers:
       return { ...state, offers: action.payload, isDataLoaded: true };
+    case ActionType.LoadNearByOffers:
+      return { ...state, nearByOffers: action.payload };
+    case ActionType.LoadComments:
+      return { ...state, comments: action.payload };
+    case ActionType.LoadOffer:
+      return { ...state, offer: action.payload };
     case ActionType.ChangeSelectedSortingType:
       return { ...state, selectedSortingType: action.payload };
-    case ActionType.RequireAuthorization:
+    case ActionType.SetAuthorization:
       return { ...state, authorizationStatus: action.payload };
-    case ActionType.RequireAuthInfo:
+    case ActionType.SetAuthInfo:
       return { ...state, authInfo: action.payload };
-    case ActionType.RequireLogout:
+    case ActionType.SetLogout:
       return { ...state, authorizationStatus: AuthorizationStatus.NoAuth, authInfo: initialState.authInfo };
     default:
       return state;

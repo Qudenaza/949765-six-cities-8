@@ -25,7 +25,7 @@ export type Offer = {
   maxAdults: string,
   price: number,
   title: string,
-  type: string | string[],
+  type: string,
   rating: number,
   location: Point,
   bedrooms: number,
@@ -44,7 +44,7 @@ export type ServerOffer = {
   'max_adults': string,
   price: number,
   title: string,
-  type: string | string[],
+  type: string,
   rating: number,
   location: Point,
   bedrooms: number,
@@ -86,3 +86,33 @@ export type Sorting = {
   [key: string]: (offers: Offer[]) => Offer[],
 }
 
+export type Comment = {
+  comment: string,
+  date: string,
+  id: number,
+  rating: number,
+  user: {
+    avatarUrl: string,
+    id: number,
+    isPro: boolean,
+    name: string
+  },
+};
+
+export type CommentPostType = {
+  comment: string,
+  rating: number,
+};
+
+export type ServerComment = {
+  comment: string,
+  date: string,
+  id: number,
+  rating: number,
+  user: {
+    'avatar_url': string,
+    id: number,
+    'is_pro': boolean,
+    name: string
+  },
+}
