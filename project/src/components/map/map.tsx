@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import useMap from '../../hooks/useMap';
 import { City, Offer } from '../../types/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
-import { Icon, Marker } from 'leaflet';
+import { Icon, Marker, LayerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 type Props = {
@@ -23,35 +23,37 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40],
 });
 
+const createMarkers = (offers: Offer[], selectedPoint: number) => offers.map((offer) =>
+  new Marker({
+    lat: offer.location.latitude,
+    lng: offer.location.longitude,
+  }).setIcon(offer.id === selectedPoint ? currentCustomIcon : defaultCustomIcon));
+
+
 function Map({ city, offers, selectedPoint }: Props): JSX.Element {
-  const [markers, setMarkers] = useState<Marker[] | []>([]);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const [layerGroup, setLayerGroup] = useState(new LayerGroup(createMarkers(offers, selectedPoint)));
+
+  if (map) {
+    layerGroup.addTo(map);
+  }
 
   useEffect(() => {
     if (map) {
-      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
-
       map.once('zoomend', () => {
-        markers.forEach((marker) => marker.remove());
+        layerGroup.clearLayers();
       });
 
-      setMarkers(offers.map((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude,
-        });
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
 
-        marker
-          .setIcon(offer.id === selectedPoint ? currentCustomIcon : defaultCustomIcon)
-          .addTo(map);
+      setLayerGroup(new LayerGroup(createMarkers(offers, selectedPoint)));
 
-        return marker;
-      }));
+      layerGroup.addTo(map);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, offers, selectedPoint, city]);
+  }, [selectedPoint, city]);
 
   return (
     <section

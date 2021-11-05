@@ -1,5 +1,5 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
@@ -11,7 +11,7 @@ import { AppRoute } from '../../const';
 import { State } from '../../types/state';
 import browserHistory from '../../browser-history';
 
-const mapStateToProps = ({ isDataLoaded}: State) => ({
+const mapStateToProps = ({isDataLoaded}: State) => ({
   isDataLoaded,
 });
 
@@ -27,7 +27,7 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
   }
 
   return (
-    <BrowserRouter history={browserHistory}>
+    <Router history={browserHistory}>
       <Switch>
         <Route path={AppRoute.Root} exact>
           <Main />
@@ -36,7 +36,7 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
           <SignIn />
         </Route>
         <PrivateRoute path={AppRoute.Favorites} exact>
-          <Favorites offers={[]}/>
+          <Favorites />
         </PrivateRoute>
         <Route path={AppRoute.Offer} exact>
           <Offer />
@@ -45,7 +45,7 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
           <NotFoundScreen />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
