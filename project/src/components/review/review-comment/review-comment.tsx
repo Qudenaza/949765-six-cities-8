@@ -1,4 +1,5 @@
 import { Comment } from '../../../types/types';
+import { calculateRating } from '../../../utils/common';
 
 type Props = {
   comment: Comment,
@@ -20,7 +21,7 @@ function ReviewComment({comment}: Props): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: `${Math.round(comment.rating) / 5 * 100}%`}}></span>
+            <span style={{width: calculateRating(comment.rating)}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

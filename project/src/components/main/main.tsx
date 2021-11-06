@@ -1,39 +1,28 @@
-import { useState } from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { changeCity } from '../../store/action';
 import Sorting from '../sorting/sorting';
 import CityList from '../city-list/city-list';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import Header from '../header/header';
-import { State } from '../../types/state';
 import { City } from '../../types/types';
+import { getCity } from '../../store/app-state/selectors';
+import { State } from '../../types/state';
+import { NameSpace } from '../../store/root-reducer';
 
-const mapStateToProps = ({city, offers, selectedSortingType}: State) => ({
-  city,
-  offers: offers ? offers.filter((offer) => offer.city.name === city.name) : [],
-  selectedSortingType,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  onCityChange: changeCity,
-}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Main({city, offers, selectedSortingType, onCityChange}: PropsFromRedux): JSX.Element {
+function Main(): JSX.Element {
+  const city = useSelector(getCity);
+  const offers = useSelector((state: State) => state[NameSpace.MainData].offers[city.name]);
   const [activeCardId, setActiveCardId] = useState(Infinity);
 
-  const handleOfferMouseEnter = (id: number) => {
-    setActiveCardId(id);
-  };
+  const dispatch = useDispatch();
 
-  const handleCityChange = (location: City) => {
-    onCityChange(location);
-  };
+  const handleCityChange = useCallback((location: City) => {
+    dispatch(changeCity(location));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city]);
 
   return (
     <>
@@ -42,19 +31,19 @@ function Main({city, offers, selectedSortingType, onCityChange}: PropsFromRedux)
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CityList city={city.name} onCityChange={handleCityChange}/>
+            <CityList onCityChange={handleCityChange}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in {city.name}</b>
+              <b className="places__found">{offers ? offers.length : 0} places to stay in {city.name}</b>
               <Sorting />
-              <OfferList offers={offers} sortBy={selectedSortingType} onMouseEnter={handleOfferMouseEnter} onMouseLeave={() => setActiveCardId(Infinity)}/>
+              <OfferList offers={offers} onMouseEnter={(id: number) => setActiveCardId(id)} onMouseLeave={() => setActiveCardId(Infinity)}/>
             </section>
             <div className="cities__right-section">
-              <Map city={city} offers={offers} selectedPoint={activeCardId}/>
+              <Map offers={offers} selectedPoint={activeCardId}/>
             </div>
           </div>
         </div>
@@ -63,5 +52,4 @@ function Main({city, offers, selectedSortingType, onCityChange}: PropsFromRedux)
   );
 }
 
-export { Main };
-export default connector(Main);
+export default Main;

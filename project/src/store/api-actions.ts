@@ -2,15 +2,17 @@ import { ThunkActionResult } from '../types/action';
 import { ServerOffer, ServerComment, CommentPostType } from '../types/types';
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
-import { loadOffers, loadNearByOffers, loadOffer, loadComments, setAuthInfo, setAuthorization, setLogout, redirectBack } from './action';
+import { loadOffers, loadNearByOffers, loadOffer, loadComments, setAuthInfo, setAuthorization, setLogout } from './action';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { adaptServerOfferToClient, adaptAuthInfoToClient, adaptServerCommentToClient } from '../adapter';
+import { divideOffersByCity } from '../utils/common';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
+    const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
-    dispatch(loadOffers(data.map((offer) => adaptServerOfferToClient(offer))));
+    dispatch(loadOffers(divideOffersByCity(adaptedOffers)));
   };
 
 export const fetchNearByOffersAction = (id: number): ThunkActionResult =>
@@ -51,7 +53,6 @@ export const loginAction = ({ email, password }: AuthData): ThunkActionResult =>
 
     dispatch(setAuthorization(AuthorizationStatus.Auth));
     dispatch(setAuthInfo(adaptAuthInfoToClient(data)));
-    dispatch(redirectBack());
   };
 
 export const logoutAction = (): ThunkActionResult =>

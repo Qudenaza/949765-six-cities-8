@@ -1,13 +1,14 @@
-import { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useMap from '../../hooks/useMap';
-import { City, Offer } from '../../types/types';
+import { Offer } from '../../types/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Icon, Marker, LayerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { getCity } from '../../store/app-state/selectors';
 
 type Props = {
-  city: City;
-  offers: Offer[];
+  offers: Offer[] | null;
   selectedPoint: number;
 };
 
@@ -30,26 +31,27 @@ const createMarkers = (offers: Offer[], selectedPoint: number) => offers.map((of
   }).setIcon(offer.id === selectedPoint ? currentCustomIcon : defaultCustomIcon));
 
 
-function Map({ city, offers, selectedPoint }: Props): JSX.Element {
+function Map({ offers, selectedPoint }: Props): JSX.Element {
+  const city = useSelector(getCity);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-  const [layerGroup, setLayerGroup] = useState(new LayerGroup(createMarkers(offers, selectedPoint)));
+  const [layerGroup, setLayerGroup] = useState(offers && new LayerGroup(createMarkers(offers, selectedPoint)));
 
   if (map) {
-    layerGroup.addTo(map);
+    layerGroup && layerGroup.addTo(map);
   }
 
   useEffect(() => {
     if (map) {
       map.once('zoomend', () => {
-        layerGroup.clearLayers();
+        layerGroup && layerGroup.clearLayers();
       });
 
       map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
 
-      setLayerGroup(new LayerGroup(createMarkers(offers, selectedPoint)));
+      setLayerGroup(offers && new LayerGroup(createMarkers(offers, selectedPoint)));
 
-      layerGroup.addTo(map);
+      layerGroup && layerGroup.addTo(map);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,4 +67,4 @@ function Map({ city, offers, selectedPoint }: Props): JSX.Element {
   );
 }
 
-export default Map;
+export default React.memo(Map, (prevProps, nextProps) => prevProps.offers === nextProps.offers && prevProps.selectedPoint === nextProps.selectedPoint);

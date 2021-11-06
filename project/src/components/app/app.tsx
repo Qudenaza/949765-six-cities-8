@@ -1,4 +1,4 @@
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Switch, Route, Router } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import Main from '../main/main';
@@ -8,18 +8,12 @@ import Offer from '../offer/offer';
 import NotFoundScreen from '../not-found-screen/not-fount-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { AppRoute } from '../../const';
-import { State } from '../../types/state';
 import browserHistory from '../../browser-history';
+import { getLoadedDataStatus } from '../../store/main-data/selectors';
 
-const mapStateToProps = ({isDataLoaded}: State) => ({
-  isDataLoaded,
-});
+function App(): JSX.Element {
+  const isDataLoaded = useSelector(getLoadedDataStatus);
 
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function App({isDataLoaded}: PropsFromRedux): JSX.Element {
   if (!isDataLoaded) {
     return (
       <LoadingScreen />
@@ -49,5 +43,5 @@ function App({isDataLoaded}: PropsFromRedux): JSX.Element {
   );
 }
 
-export { App };
-export default connector(App);
+export default App;
+
