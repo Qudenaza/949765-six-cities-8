@@ -8,20 +8,17 @@ import Map from '../map/map';
 import Header from '../header/header';
 import { City } from '../../types/types';
 import { getCity } from '../../store/app-state/selectors';
-import { State } from '../../types/state';
-import { NameSpace } from '../../store/root-reducer';
+import { getOffers } from '../../store/main-data/selectors';
 
 function Main(): JSX.Element {
   const city = useSelector(getCity);
-  const offers = useSelector((state: State) => state[NameSpace.MainData].offers[city.name]);
+  const offers = useSelector(getOffers(city.name));
   const [activeCardId, setActiveCardId] = useState(Infinity);
 
   const dispatch = useDispatch();
 
   const handleCityChange = useCallback((location: City) => {
     dispatch(changeCity(location));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city]);
 
   return (

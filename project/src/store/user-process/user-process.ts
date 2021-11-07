@@ -10,8 +10,8 @@ const initialState: UserProcess = {
 
 const userProcess = createReducer(initialState, (builder) => {
   builder
-    .addCase(setAuthorization, (state) => {
-      state.authorizationStatus = AuthorizationStatus.Auth;
+    .addCase(setAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload.value;
     })
     .addCase(setAuthInfo, (state, action) => {
       state.authInfo = action.payload.value;
