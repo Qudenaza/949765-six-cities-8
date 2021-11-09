@@ -1,51 +1,62 @@
+import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../types/action';
-import { Offer, City, AuthInfo, Comment } from '../types/types';
+import { Offers, Offer, City, AuthInfo, Comment } from '../types/types';
 import { AuthorizationStatus } from '../const';
 
-export const changeCity = (value: City) => ({
-  type: ActionType.ChangeCity,
-  payload: value,
-} as const);
+export const changeCity = createAction(ActionType.ChangeCity, (value: City) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const loadOffers = (value: Offer[]) => ({
-  type: ActionType.LoadOffers,
-  payload: value,
-} as const);
+export const loadOffers = createAction(ActionType.LoadOffers, (value: Offers) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const loadNearByOffers = (value: Offer[]) => ({
-  type: ActionType.LoadNearByOffers,
-  payload: value,
-} as const);
+export const loadNearByOffers = createAction(ActionType.LoadNearByOffers, (value: Offer[]) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const loadOffer = (value: Offer) => ({
-  type: ActionType.LoadOffer,
-  payload: value,
-} as const);
+export const loadFavoriteOffers = createAction(ActionType.LoadFavoriteOffers, (value: Offer[]) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const loadComments = (value: Comment[]) => ({
-  type: ActionType.LoadComments,
-  payload: value,
-} as const);
+export const loadOffer = createAction(ActionType.LoadOffer, (value: Offer) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const changeSelectedSortingType = (value: string) => ({
-  type: ActionType.ChangeSelectedSortingType,
-  payload: value,
-} as const);
+export const loadComments = createAction(ActionType.LoadComments, (value: Comment[]) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const setAuthorization = (authStatus: AuthorizationStatus) => ({
-  type: ActionType.SetAuthorization,
-  payload: authStatus,
-} as const);
+export const changeSelectedSortingType = createAction(ActionType.ChangeSelectedSortingType, (value: string) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const setAuthInfo = (authInfo: AuthInfo) => ({
-  type: ActionType.SetAuthInfo,
-  payload: authInfo,
-} as const);
+export const setAuthorization = createAction(ActionType.SetAuthorization, (value: AuthorizationStatus) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const setLogout = () => ({
-  type: ActionType.SetLogout,
-} as const);
+export const setAuthInfo = createAction(ActionType.SetAuthInfo, (value: AuthInfo) => ({
+  payload: {
+    value,
+  },
+}));
 
-export const redirectBack = () => ({
-  type: ActionType.RedirectBack,
-} as const);
+export const setLogout = createAction(ActionType.SetLogout);
+
+

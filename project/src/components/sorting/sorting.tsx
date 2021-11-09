@@ -1,27 +1,19 @@
-import { MouseEvent, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import React, { MouseEvent, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { changeSelectedSortingType } from '../../store/action';
 import SortingItem from '../sorting-item/sorting-item';
 import { sortingTypes } from '../../const';
-import { State } from '../../types/state';
+import { getSelectedSortingType } from '../../store/app-state/selectors';
 
-const mapStateToProps = ({ selectedSortingType }: State) => ({
-  selectedSortingType,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  onSelectedSortingTypeChange: changeSelectedSortingType,
-}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-function Sorting({ selectedSortingType, onSelectedSortingTypeChange }: ConnectedProps<typeof connector>): JSX.Element {
+function Sorting(): JSX.Element {
+  const selectedSortingType = useSelector(getSelectedSortingType);
   const [condition, setCondition] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleSortTypeChange = (evt: MouseEvent) => {
     if (evt.target instanceof HTMLLIElement) {
-      onSelectedSortingTypeChange(evt.target.dataset.type || 'popular');
+      dispatch(changeSelectedSortingType(evt.target.dataset.type || 'popular'));
     }
 
     setCondition(false);
@@ -48,5 +40,4 @@ function Sorting({ selectedSortingType, onSelectedSortingTypeChange }: Connected
 }
 
 
-export { Sorting };
-export default connector(Sorting);
+export default React.memo(Sorting);

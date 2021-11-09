@@ -1,6 +1,7 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/types';
+import { calculateRating } from '../../utils/common';
 
 type Props = {
   offer: Offer,
@@ -9,7 +10,6 @@ type Props = {
 }
 
 function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, type}, isNearby, onMouseEnter}: Props): JSX.Element {
-
   const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
 
@@ -40,7 +40,7 @@ function OfferCard({offer: {id, previewImage, title, price, isFavorite, rating, 
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${Math.round(rating) / 5 * 100}%`}}></span>
+            <span style={{width: calculateRating(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

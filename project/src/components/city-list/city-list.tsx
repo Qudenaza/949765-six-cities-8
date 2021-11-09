@@ -1,14 +1,17 @@
-import { MouseEvent } from 'react';
+import React, { MouseEvent } from 'react';
+import { useSelector } from 'react-redux';
 import City from '../city/city';
 import { City as CityType } from '../../types/types';
 import { cities } from '../../const';
+import { getCity } from '../../store/app-state/selectors';
 
 type Props = {
-  city: string,
   onCityChange: (value: CityType) => void,
 }
 
-function CityList({city, onCityChange}: Props): JSX.Element {
+function CityList({onCityChange}: Props): JSX.Element {
+  const city = useSelector(getCity);
+
   const handleCityChange = (evt: MouseEvent, location: CityType) => {
     evt.preventDefault();
 
@@ -17,9 +20,9 @@ function CityList({city, onCityChange}: Props): JSX.Element {
 
   return (
     <ul className="locations__list tabs__list">
-      {cities.map((location) => <City activeCity={city} city={location} key={location.name} handleClick={handleCityChange}/>)}
+      {cities.map((location) => <City activeCity={city.name} city={location} key={location.name} handleClick={handleCityChange}/>)}
     </ul>
   );
 }
 
-export default CityList;
+export default React.memo(CityList);

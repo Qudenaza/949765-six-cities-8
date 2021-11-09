@@ -1,7 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { useParams } from 'react-router';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ReviewRating from '../review-rating/review-rating';
 import { postCommentAction } from '../../../store/api-actions';
 
@@ -28,26 +27,21 @@ const ratings = [
   },
 ];
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  onFormSubmit: postCommentAction,
-}, dispatch);
 
-const connector = connect(null, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function ReviewForm({onFormSubmit}: PropsFromRedux): JSX.Element {
+function ReviewForm(): JSX.Element {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const params = useParams<{id: string}>();
 
+  const dispatch = useDispatch();
+
   const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    onFormSubmit(+params.id, {
+    dispatch(postCommentAction(+params.id, {
       comment,
       rating,
-    });
+    }));
 
     setRating(0);
     setComment('');
@@ -82,5 +76,4 @@ function ReviewForm({onFormSubmit}: PropsFromRedux): JSX.Element {
   );
 }
 
-export { ReviewForm };
-export default connector(ReviewForm);
+export default ReviewForm;

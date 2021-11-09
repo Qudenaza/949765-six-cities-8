@@ -1,4 +1,5 @@
-/* eslint-disable */
+import { Offers, Offer } from '../types/types';
+
 export const shuffle = <T>(array: T[]): T[] => {
   const newArray = array.slice();
 
@@ -11,5 +12,24 @@ export const shuffle = <T>(array: T[]): T[] => {
   return newArray;
 };
 
-export const upperCased = (value: string): string => value[0].toUpperCase() + value.slice(1);
+export const calculateRating = (rating: number): string => `${Math.round(rating) / 5 * 100}%`;
 
+export const capitalize = (value: string): string => value[0].toUpperCase() + value.slice(1);
+
+export const divideOffersByCity = (offers: Offer[]): Offers => {
+  const dividedOffers: {
+    [key: string]: Offer[],
+  } = {};
+
+  offers.forEach((offer) => {
+    const key = offer.city.name;
+
+    if (!dividedOffers[key]) {
+      return dividedOffers[key] = [offer];
+    }
+
+    dividedOffers[key].push(offer);
+  });
+
+  return dividedOffers;
+};

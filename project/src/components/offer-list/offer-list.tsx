@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import OfferCard from '../offer-card/offer-card';
 import { Offer } from '../../types/types';
 import { sorting } from '../../utils/sorting';
+import { getSelectedSortingType } from '../../store/app-state/selectors';
 
 type Props = {
-  offers: Offer[],
-  sortBy?: string,
+  offers: Offer[] | null,
   isNearby?: boolean,
   onMouseEnter?: (id: number) => void,
   onMouseLeave? : () => void,
 }
 
-function OfferList({offers, sortBy, isNearby = false, onMouseEnter, onMouseLeave}: Props): JSX.Element {
+function OfferList({ offers, isNearby = false, onMouseEnter, onMouseLeave }: Props): JSX.Element {
+  const sortBy = useSelector(getSelectedSortingType);
   const [sortedOffers, setSortedOffers] = useState(offers);
 
   const handleOfferMouseEnter = (id: number) => {
@@ -21,7 +23,7 @@ function OfferList({offers, sortBy, isNearby = false, onMouseEnter, onMouseLeave
   };
 
   useEffect(() => {
-    if (sortBy) {
+    if (sortBy && offers) {
       setSortedOffers(sorting[sortBy]([...offers]));
     }
 
@@ -31,9 +33,9 @@ function OfferList({offers, sortBy, isNearby = false, onMouseEnter, onMouseLeave
 
   return (
     <div className={className} onMouseLeave={onMouseLeave}>
-      {sortedOffers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby={isNearby} onMouseEnter={handleOfferMouseEnter}/>)}
+      {sortedOffers && sortedOffers.map((offer) => <OfferCard key={offer.id} offer={offer} isNearby={isNearby} onMouseEnter={handleOfferMouseEnter}/>)}
     </div>
   );
 }
 
-export default OfferList;
+export default React.memo(OfferList, (prev, next) => prev.offers === next.offers);

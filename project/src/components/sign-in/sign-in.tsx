@@ -1,27 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { ThunkAppDispatch } from '../../types/action';
-import { AuthData } from '../../types/auth-data';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
-import { State } from '../../types/state';
+import { getCity } from '../../store/app-state/selectors';
 
-const mapStateToProps = ({city}: State) => ({
-  city,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit(authData: AuthData) {
-    dispatch(loginAction(authData));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function SignIn({onSubmit, city}: PropsFromRedux ): JSX.Element {
+function SignIn(): JSX.Element {
+  const city = useSelector(getCity);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const handleEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setEmail(evt.target.value);
@@ -35,10 +24,12 @@ function SignIn({onSubmit, city}: PropsFromRedux ): JSX.Element {
     evt.preventDefault();
 
     if (email !== null && password !== null) {
-      onSubmit({
+      dispatch(loginAction({
         email: email,
         password: password,
-      });
+      }));
+
+      history.goBack();
     }
   };
 
@@ -71,5 +62,4 @@ function SignIn({onSubmit, city}: PropsFromRedux ): JSX.Element {
   );
 }
 
-export { SignIn };
-export default connector(SignIn);
+export default SignIn;
