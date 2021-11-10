@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { changeSelectedSortingType } from '../../store/action';
 import SortingItem from '../sorting-item/sorting-item';
 import { sortingTypes } from '../../const';
-import { getSelectedSortingType } from '../../store/app-state/selectors';
+import { selectSelectedSortingType } from '../../store/app-state/selectors';
 
 function Sorting(): JSX.Element {
-  const selectedSortingType = useSelector(getSelectedSortingType);
+  const selectedSortingType = useSelector(selectSelectedSortingType);
   const [condition, setCondition] = useState(false);
 
   const dispatch = useDispatch();

@@ -8,12 +8,12 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import { shuffle, capitalize, calculateRating } from '../../utils/common';
-import { getOffer, getComments, getNearByOffers } from '../../store/offer-data/selectors';
+import { selectOffer, selectComments, selectNearByOffers } from '../../store/offer-data/selectors';
 
 function Offer(): JSX.Element {
-  const offer = useSelector(getOffer);
-  const comments = useSelector(getComments);
-  const nearByOffers = useSelector(getNearByOffers);
+  const offer = useSelector(selectOffer);
+  const comments = useSelector(selectComments);
+  const nearByOffers = useSelector(selectNearByOffers);
   const [activeCardId, setActiveCardId] = useState(0);
   const { id } = useParams<{id: string}>();
 

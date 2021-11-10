@@ -33,8 +33,6 @@ export const createAPI = (onUnauthorized: UnauthorizedCallback): AxiosInstance =
           browserHistory.push(AppRoute.NotFound);
           break;
       }
-
-      return Promise.reject(error);
     },
   );
 

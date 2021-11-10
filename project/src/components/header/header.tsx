@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UserBlock from '../user-block/user-block';
-import { getAuthorizationStatus, getAuthInfo } from '../../store/user-process/selectors';
+import { selectAuthorizationStatus, selectAuthInfo } from '../../store/user-process/selectors';
 
 function Header(): JSX.Element {
-  const authorizationStatus = useSelector(getAuthorizationStatus);
-  const authInfo = useSelector(getAuthInfo);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const authInfo = useSelector(selectAuthInfo);
 
   return (
     <header className="header">

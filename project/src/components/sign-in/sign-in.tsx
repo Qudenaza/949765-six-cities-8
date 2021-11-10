@@ -2,10 +2,10 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
-import { getCity } from '../../store/app-state/selectors';
+import { selectCity } from '../../store/app-state/selectors';
 
 function SignIn(): JSX.Element {
-  const city = useSelector(getCity);
+  const city = useSelector(selectCity);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();

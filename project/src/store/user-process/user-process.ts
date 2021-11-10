@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../../const';
 import { UserProcess } from '../../types/state';
-import { setAuthorization, setAuthInfo } from '../action';
+import { setAuthorization, setAuthInfo, setLogout } from '../action';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.NoAuth,
@@ -15,6 +15,9 @@ const userProcess = createReducer(initialState, (builder) => {
     })
     .addCase(setAuthInfo, (state, action) => {
       state.authInfo = action.payload.value;
+    })
+    .addCase(setLogout, (state, action) => {
+      state.authorizationStatus = action.payload.value;
     });
 });
 

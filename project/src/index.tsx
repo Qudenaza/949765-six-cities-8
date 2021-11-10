@@ -21,8 +21,10 @@ const store = configureStore({
     }),
 });
 
-(store.dispatch)(checkAuthAction());
-(store.dispatch)(fetchOffersAction());
+(async () => {
+  await store.dispatch(checkAuthAction());
+  await store.dispatch(fetchOffersAction());
+})();
 
 ReactDOM.render(
   <React.StrictMode>

@@ -9,10 +9,10 @@ import NotFoundScreen from '../not-found-screen/not-fount-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { AppRoute } from '../../const';
 import browserHistory from '../../browser-history';
-import { getLoadedDataStatus } from '../../store/main-data/selectors';
+import { selectLoadedDataStatus } from '../../store/main-data/selectors';
 
 function App(): JSX.Element {
-  const isDataLoaded = useSelector(getLoadedDataStatus);
+  const isDataLoaded = useSelector(selectLoadedDataStatus);
 
   if (!isDataLoaded) {
     return (

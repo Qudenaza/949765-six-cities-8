@@ -1,4 +1,4 @@
-import { Offers, Offer } from '../types/types';
+import { GroupedByCityOffers, Offer } from '../types/types';
 
 export const shuffle = <T>(array: T[]): T[] => {
   const newArray = array.slice();
@@ -16,10 +16,8 @@ export const calculateRating = (rating: number): string => `${Math.round(rating)
 
 export const capitalize = (value: string): string => value[0].toUpperCase() + value.slice(1);
 
-export const divideOffersByCity = (offers: Offer[]): Offers => {
-  const dividedOffers: {
-    [key: string]: Offer[],
-  } = {};
+export const divideOffersByCity = (offers: Offer[]): GroupedByCityOffers => {
+  const dividedOffers: GroupedByCityOffers = {};
 
   offers.forEach((offer) => {
     const key = offer.city.name;

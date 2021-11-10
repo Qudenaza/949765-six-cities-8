@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../types/action';
-import { Offers, Offer, City, AuthInfo, Comment } from '../types/types';
+import { GroupedByCityOffers, Offer, City, AuthInfo, Comment } from '../types/types';
 import { AuthorizationStatus } from '../const';
 
 export const changeCity = createAction(ActionType.ChangeCity, (value: City) => ({
@@ -9,7 +9,7 @@ export const changeCity = createAction(ActionType.ChangeCity, (value: City) => (
   },
 }));
 
-export const loadOffers = createAction(ActionType.LoadOffers, (value: Offers) => ({
+export const loadOffers = createAction(ActionType.LoadOffers, (value: GroupedByCityOffers) => ({
   payload: {
     value,
   },
@@ -22,6 +22,18 @@ export const loadNearByOffers = createAction(ActionType.LoadNearByOffers, (value
 }));
 
 export const loadFavoriteOffers = createAction(ActionType.LoadFavoriteOffers, (value: Offer[]) => ({
+  payload: {
+    value,
+  },
+}));
+
+export const removeFromFavorites = createAction(ActionType.RemoveFavoriteOffer, (value: number) => ({
+  payload: {
+    value,
+  },
+}));
+
+export const updateOfferFavoriteStatus = createAction(ActionType.UpdateOfferFavoriteStatus, (value: Offer) => ({
   payload: {
     value,
   },
@@ -57,6 +69,9 @@ export const setAuthInfo = createAction(ActionType.SetAuthInfo, (value: AuthInfo
   },
 }));
 
-export const setLogout = createAction(ActionType.SetLogout);
-
+export const setLogout = createAction(ActionType.SetLogout, (value: AuthorizationStatus) => ({
+  payload: {
+    value,
+  },
+}));
 

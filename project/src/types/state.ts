@@ -1,9 +1,9 @@
-import { Offers, Offer, City, AuthInfo, Comment } from './types';
+import { GroupedByCityOffers, Offer, City, AuthInfo, Comment } from './types';
 import { RootState } from '../store/root-reducer';
 import { AuthorizationStatus } from '../const';
 
 export type MainData = {
-  offers: Offers,
+  offers: GroupedByCityOffers,
   isDataLoaded: boolean,
 };
 
@@ -14,7 +14,7 @@ export type OfferData = {
 };
 
 export type FavoriteData = {
-  favoriteOffers: Offer[] | null,
+  favoriteOffers: Offer[],
 };
 
 export type UserProcess = {

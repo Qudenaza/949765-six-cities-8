@@ -3,14 +3,14 @@ import ReviewList from './review-list/review-list';
 import ReviewForm from './review-form/review-form';
 import { Comment } from '../../types/types';
 import { AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 
 type Props = {
   comments: Comment[],
 };
 
 function Review({ comments }: Props): JSX.Element {
-  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
 
   return (
     <section className="property__reviews reviews">

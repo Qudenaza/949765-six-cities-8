@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import OfferCard from '../offer-card/offer-card';
 import { Offer } from '../../types/types';
 import { sorting } from '../../utils/sorting';
-import { getSelectedSortingType } from '../../store/app-state/selectors';
+import { selectSelectedSortingType } from '../../store/app-state/selectors';
 
 type Props = {
   offers: Offer[] | null,
@@ -13,7 +13,7 @@ type Props = {
 }
 
 function OfferList({ offers, isNearby = false, onMouseEnter, onMouseLeave }: Props): JSX.Element {
-  const sortBy = useSelector(getSelectedSortingType);
+  const sortBy = useSelector(selectSelectedSortingType);
   const [sortedOffers, setSortedOffers] = useState(offers);
 
   const handleOfferMouseEnter = (id: number) => {

@@ -8,6 +8,8 @@ export enum ActionType {
   LoadOffers = 'data/loadOffers',
   LoadNearByOffers = 'data/loadNearByOffers',
   LoadFavoriteOffers = 'data/loadFavoriteOffers',
+  RemoveFavoriteOffer = 'data/removeFavoriteOffer',
+  UpdateOfferFavoriteStatus = 'data/updateOfferFavoriteStatus',
   LoadOffer = 'data/loadOffer',
   LoadComments = 'data/loadComments',
   ChangeSelectedSortingType = 'app/changeSelectedSortingType',
