@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCommentsAction, fetchNearByOffersAction, fetchOfferAction } from '../../store/api-actions';
+import cn from 'classnames';
 import Header from '../header/header';
 import Review from '../review/review';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -59,7 +60,7 @@ function Offer(): JSX.Element {
               )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{offer.title}</h1>
-                <button className={offer.isFavorite ? 'property__bookmark-button property__bookmark-button--active button' : 'property__bookmark-button button'} type="button">
+                <button className={cn('button', 'property__bookmark-button', {'property__bookmark-button--active': offer.isFavorite} )} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
@@ -91,7 +92,7 @@ function Offer(): JSX.Element {
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
-                  <div className={offer.host.isPro ? 'property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper' : 'property__avatar-wrapper user__avatar-wrapper'}>
+                  <div className={cn('property__avatar-wrapper', 'user__avatar-wrapper', {'property__avatar-wrapper--pro': offer.host.isPro})}>
                     <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host" />
                   </div>
                   <span className="property__user-name">{offer.host.name}</span>

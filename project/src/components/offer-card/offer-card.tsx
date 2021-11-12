@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import cn from 'classnames';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { Offer } from '../../types/types';
@@ -48,7 +49,7 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
 
   return (
     <article className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'} onMouseEnter={mouseEnterHandler}>
-      <div className={isNearby ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
+      <div className={cn('place-card__image-wrapper', {'near-places__image-wrapper': isNearby, 'cities__image-wrapper': !isNearby})}>
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place"/>
         </Link>
@@ -59,7 +60,7 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${isFavorite && 'place-card__bookmark-button--active'} button`} type="button" onClick={handleFavoriteButtonClick}>
+          <button className={cn('button', 'place-card__bookmark-button', {'place-card__bookmark-button--active': isFavorite})}onClick={handleFavoriteButtonClick}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark" />
             </svg>

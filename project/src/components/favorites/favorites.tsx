@@ -8,6 +8,7 @@ import Footer from '../footer/footer';
 
 function Favorites(): JSX.Element {
   const  favoriteOffers = useSelector(selectFavoriteOffers);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

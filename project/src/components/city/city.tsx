@@ -1,20 +1,24 @@
 import { MouseEvent } from 'react';
+import cn from 'classnames';
 import { City as CityType} from '../../types/types';
+import { Link } from 'react-router-dom';
 
 type Props = {
-  activeCity: string,
+  isActive: boolean,
   city: CityType,
   handleClick: (event: MouseEvent, city: CityType) => void,
 }
 
-function City({activeCity, city, handleClick}: Props): JSX.Element {
-  const className = activeCity === city.name ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item';
-
+function City({isActive, city, handleClick}: Props): JSX.Element {
   return (
     <li className="locations__item">
-      <a className={className} href="./" onClick={(evt) => handleClick(evt, city)}>
+      <Link
+        to="./"
+        className={cn('locations__item-link tabs__item', {'tabs__item--active': isActive})}
+        onClick={(evt) => handleClick(evt, city)}
+      >
         <span>{city.name}</span>
-      </a>
+      </Link>
     </li>
   );
 }
