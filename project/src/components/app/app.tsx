@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { Switch, Route, Router } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import Main from '../main/main';
@@ -6,20 +5,10 @@ import SignIn from '../sign-in/sign-in';
 import Favorites from '../favorites/favorites';
 import Offer from '../offer/offer';
 import NotFoundScreen from '../not-found-screen/not-fount-screen';
-import LoadingScreen from '../loading-screen/loading-screen';
 import { AppRoute } from '../../const';
 import browserHistory from '../../browser-history';
-import { selectLoadedDataStatus } from '../../store/main-data/selectors';
 
 function App(): JSX.Element {
-  const isDataLoaded = useSelector(selectLoadedDataStatus);
-
-  if (!isDataLoaded) {
-    return (
-      <LoadingScreen />
-    );
-  }
-
   return (
     <Router history={browserHistory}>
       <Switch>

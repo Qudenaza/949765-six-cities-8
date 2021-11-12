@@ -4,7 +4,6 @@ import { AuthorizationStatus } from '../const';
 
 export type MainData = {
   offers: GroupedByCityOffers,
-  isDataLoaded: boolean,
 };
 
 export type OfferData = {

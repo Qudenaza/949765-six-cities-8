@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ThunkActionResult } from '../types/action';
 import { ServerOffer, ServerComment, CommentPostType } from '../types/types';
 import { AuthData } from '../types/auth-data';
