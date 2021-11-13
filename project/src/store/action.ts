@@ -9,19 +9,19 @@ export const changeCity = createAction(ActionType.ChangeCity, (value: City) => (
   },
 }));
 
-export const loadOffers = createAction(ActionType.LoadOffers, (value: GroupedByCityOffers) => ({
+export const setOffers = createAction(ActionType.SetOffers, (value: GroupedByCityOffers) => ({
   payload: {
     value,
   },
 }));
 
-export const loadNearByOffers = createAction(ActionType.LoadNearByOffers, (value: Offer[]) => ({
+export const setNearByOffers = createAction(ActionType.SetNearByOffers, (value: Offer[]) => ({
   payload: {
     value,
   },
 }));
 
-export const loadFavoriteOffers = createAction(ActionType.LoadFavoriteOffers, (value: Offer[]) => ({
+export const setFavoriteOffers = createAction(ActionType.SetFavoriteOffers, (value: Offer[]) => ({
   payload: {
     value,
   },
@@ -39,13 +39,13 @@ export const updateOfferFavoriteStatus = createAction(ActionType.UpdateOfferFavo
   },
 }));
 
-export const loadOffer = createAction(ActionType.LoadOffer, (value: Offer) => ({
+export const setOffer = createAction(ActionType.SetOffer, (value: Offer) => ({
   payload: {
     value,
   },
 }));
 
-export const loadComments = createAction(ActionType.LoadComments, (value: Comment[]) => ({
+export const setComments = createAction(ActionType.SetComments, (value: Comment[]) => ({
   payload: {
     value,
   },

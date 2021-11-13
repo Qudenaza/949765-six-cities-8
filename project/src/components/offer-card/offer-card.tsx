@@ -49,6 +49,11 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
 
   return (
     <article className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'} onMouseEnter={mouseEnterHandler}>
+      {offer.isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
       <div className={cn('place-card__image-wrapper', {'near-places__image-wrapper': isNearby, 'cities__image-wrapper': !isNearby})}>
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place"/>

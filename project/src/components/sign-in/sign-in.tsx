@@ -3,9 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
 import { selectCity } from '../../store/app-state/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { AuthorizationStatus } from '../../const';
 
 function SignIn(): JSX.Element {
   const city = useSelector(selectCity);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -32,6 +35,10 @@ function SignIn(): JSX.Element {
       history.goBack();
     }
   };
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    history.push('./');
+  }
 
   return (
     <main className="page__main page__main--login">

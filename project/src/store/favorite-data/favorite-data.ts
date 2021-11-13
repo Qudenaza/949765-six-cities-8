@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { FavoriteData } from '../../types/state';
-import { loadFavoriteOffers, removeFromFavorites } from '../action';
+import { setFavoriteOffers, removeFromFavorites } from '../action';
 
 const initialState: FavoriteData = {
   favoriteOffers: [],
@@ -8,7 +8,7 @@ const initialState: FavoriteData = {
 
 const favoriteData = createReducer(initialState, (builder) => {
   builder
-    .addCase(loadFavoriteOffers, (state, action) => {
+    .addCase(setFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload.value;
     })
     .addCase(removeFromFavorites, (state, action) => {

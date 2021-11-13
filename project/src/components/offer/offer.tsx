@@ -1,21 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCommentsAction, fetchNearByOffersAction, fetchOfferAction } from '../../store/api-actions';
+import { fetchCommentsAction, fetchNearByOffersAction, fetchOfferAction, postFavoriteStatusAction } from '../../store/api-actions';
+import browserHistory from '../../browser-history';
 import cn from 'classnames';
 import Header from '../header/header';
 import Review from '../review/review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
-import { shuffle, capitalize, calculateRating } from '../../utils/common';
+import { capitalize, calculateRating } from '../../utils/common';
 import { selectOffer, selectComments, selectNearByOffers } from '../../store/offer-data/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { AuthorizationStatus, AppRoute } from '../../const';
 
 function Offer(): JSX.Element {
   const offer = useSelector(selectOffer);
   const comments = useSelector(selectComments);
   const nearByOffers = useSelector(selectNearByOffers);
-  const [activeCardId, setActiveCardId] = useState(0);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const [isFavorite, setIsFavorite] = useState(offer && offer.isFavorite ? 1 : 0);
   const { id } = useParams<{id: string}>();
 
   const dispatch = useDispatch();
@@ -28,10 +32,20 @@ function Offer(): JSX.Element {
     // eslint-disable-next-line
   }, [id]);
 
+  const handleFavoriteButtonClick = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      browserHistory.push(AppRoute.SignIn);
 
-  const handleOfferMouseEnter = (cardId: number) => {
-    setActiveCardId(cardId);
+      return;
+    }
+
+    setIsFavorite(isFavorite ? 0 : 1);
+
+    if (offer) {
+      dispatch(postFavoriteStatusAction(offer.id, isFavorite ? 0 : 1, true));
+    }
   };
+
 
   if (!offer || offer.id !== +id) {
     return <LoadingScreen />;
@@ -44,7 +58,7 @@ function Offer(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {shuffle<string>(offer.images).slice(0, 6).map((image) => (
+              {offer.images.slice(0, 6).map((image) => (
                 <div className="property__image-wrapper" key={image}>
                   <img className="property__image" src={image} alt="Studio"/>
                 </div>
@@ -60,7 +74,7 @@ function Offer(): JSX.Element {
               )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{offer.title}</h1>
-                <button className={cn('button', 'property__bookmark-button', {'property__bookmark-button--active': offer.isFavorite} )} type="button">
+                <button className={cn('button', 'property__bookmark-button', {'property__bookmark-button--active': offer.isFavorite})} onClick={handleFavoriteButtonClick} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
@@ -105,12 +119,12 @@ function Offer(): JSX.Element {
               {comments && <Review comments={comments}/>}
             </div>
           </div>
-          <Map offers={nearByOffers} selectedPoint={activeCardId}/>
+          <Map offers={nearByOffers && nearByOffers.concat(offer)} selectedPoint={+id}/>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {nearByOffers && <OfferList offers={nearByOffers} isNearby onMouseEnter={handleOfferMouseEnter}/>}
+            {nearByOffers && <OfferList offers={nearByOffers} isNearby/>}
           </section>
         </div>
       </main>
