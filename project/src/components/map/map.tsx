@@ -5,7 +5,7 @@ import { Offer } from '../../types/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Icon, Marker, LayerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { getCity } from '../../store/app-state/selectors';
+import { selectCity } from '../../store/app-state/selectors';
 
 type Props = {
   offers: Offer[] | null;
@@ -32,7 +32,7 @@ const createMarkers = (offers: Offer[], selectedPoint: number) => offers.map((of
 
 
 function Map({ offers, selectedPoint }: Props): JSX.Element {
-  const city = useSelector(getCity);
+  const city = useSelector(selectCity);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const [layerGroup, setLayerGroup] = useState(offers && new LayerGroup(createMarkers(offers, selectedPoint)));

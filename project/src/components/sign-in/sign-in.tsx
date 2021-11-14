@@ -1,16 +1,23 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
-import { getCity } from '../../store/app-state/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { AuthorizationStatus, cities } from '../../const';
+import { changeCity } from '../../store/action';
 
 function SignIn(): JSX.Element {
-  const city = useSelector(getCity);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
+  const randomCity = cities[cities.length * Math.random() | 0];
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(changeCity(randomCity));
+  }, [dispatch, randomCity]);
 
   const handleEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setEmail(evt.target.value);
@@ -33,6 +40,10 @@ function SignIn(): JSX.Element {
     }
   };
 
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    history.push('./');
+  }
+
   return (
     <main className="page__main page__main--login">
       <div className="page__login-container container">
@@ -45,16 +56,16 @@ function SignIn(): JSX.Element {
             </div>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
-              <input className="login__input form__input" type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange}/>
+              <input className="login__input form__input" type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange} pattern="^(?=.*[aA-zZ])(?=.*\d)[aA-zZ\d]{1,}$" />
             </div>
             <button className="login__submit form__submit button" type="submit">Sign in</button>
           </form>
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="./">
-              <span>{city.name}</span>
-            </a>
+            <Link to="./" className="locations__item-link">
+              <span>{randomCity.name}</span>
+            </Link>
           </div>
         </section>
       </div>

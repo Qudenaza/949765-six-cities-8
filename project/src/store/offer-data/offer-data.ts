@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferData } from '../../types/state';
-import { loadOffer, loadNearByOffers, loadComments } from '../action';
+import { setOffer, setNearByOffers, setComments } from '../action';
 
 const initialState: OfferData = {
   offer: null,
@@ -10,13 +10,13 @@ const initialState: OfferData = {
 
 const offerData = createReducer(initialState, (builder) => {
   builder
-    .addCase(loadOffer, (state, action) => {
+    .addCase(setOffer, (state, action) => {
       state.offer = action.payload.value;
     })
-    .addCase(loadNearByOffers, (state, action) => {
+    .addCase(setNearByOffers, (state, action) => {
       state.nearByOffers = action.payload.value;
     })
-    .addCase(loadComments, (state, action) => {
+    .addCase(setComments, (state, action) => {
       state.comments = action.payload.value;
     });
 });

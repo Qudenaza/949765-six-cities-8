@@ -3,19 +3,20 @@ import ReviewList from './review-list/review-list';
 import ReviewForm from './review-form/review-form';
 import { Comment } from '../../types/types';
 import { AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 
 type Props = {
   comments: Comment[],
 };
 
 function Review({ comments }: Props): JSX.Element {
-  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const sortedComments = comments.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <section className="property__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
-      <ReviewList comments={comments}/>
+      <ReviewList comments={comments.length > 10 ? sortedComments.slice(0, 10) : sortedComments}/>
       {authorizationStatus === AuthorizationStatus.Auth && <ReviewForm />}
     </section>
   );

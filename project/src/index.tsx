@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { createAPI } from './services/api';
 import App from './components/app/app';
 import { rootReducer } from './store/root-reducer';
-import { fetchOffersAction, checkAuthAction } from './store/api-actions';
+import { checkAuthAction } from './store/api-actions';
 import { setAuthorization } from './store/action';
 import { AuthorizationStatus } from './const';
 
@@ -21,13 +21,14 @@ const store = configureStore({
     }),
 });
 
-(store.dispatch)(checkAuthAction());
-(store.dispatch)(fetchOffersAction());
+store.dispatch(checkAuthAction()).then(() => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('root'));
+});
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root'));
+

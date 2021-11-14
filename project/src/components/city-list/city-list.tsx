@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 import City from '../city/city';
 import { City as CityType } from '../../types/types';
 import { cities } from '../../const';
-import { getCity } from '../../store/app-state/selectors';
+import { selectCity } from '../../store/app-state/selectors';
 
 type Props = {
   onCityChange: (value: CityType) => void,
 }
 
 function CityList({onCityChange}: Props): JSX.Element {
-  const city = useSelector(getCity);
+  const city = useSelector(selectCity);
 
   const handleCityChange = (evt: MouseEvent, location: CityType) => {
     evt.preventDefault();
@@ -20,7 +20,7 @@ function CityList({onCityChange}: Props): JSX.Element {
 
   return (
     <ul className="locations__list tabs__list">
-      {cities.map((location) => <City activeCity={city.name} city={location} key={location.name} handleClick={handleCityChange}/>)}
+      {cities.map((location) => <City isActive={city.name === location.name} city={location} key={location.name} handleClick={handleCityChange}/>)}
     </ul>
   );
 }

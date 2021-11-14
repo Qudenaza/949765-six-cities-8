@@ -5,11 +5,13 @@ import { State } from './state';
 
 export enum ActionType {
   ChangeCity = 'data/changeCity',
-  LoadOffers = 'data/loadOffers',
-  LoadNearByOffers = 'data/loadNearByOffers',
-  LoadFavoriteOffers = 'data/loadFavoriteOffers',
-  LoadOffer = 'data/loadOffer',
-  LoadComments = 'data/loadComments',
+  SetOffers = 'data/setOffers',
+  SetNearByOffers = 'data/setNearByOffers',
+  SetFavoriteOffers = 'data/setFavoriteOffers',
+  RemoveFavoriteOffer = 'data/removeFavoriteOffer',
+  UpdateOfferFavoriteStatus = 'data/updateOfferFavoriteStatus',
+  SetOffer = 'data/setOffer',
+  SetComments = 'data/setComments',
   ChangeSelectedSortingType = 'app/changeSelectedSortingType',
   SetAuthorization = 'user/setAuthorization',
   SetLogout = 'user/setLogout',

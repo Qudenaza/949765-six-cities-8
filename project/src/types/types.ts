@@ -54,8 +54,8 @@ export type ServerOffer = {
   images: string[],
 };
 
-export type Offers = {
-  [key: string]: Offer[] | [],
+export type GroupedByCityOffers = {
+  [key: string]: Offer[],
 };
 
 export type City = {

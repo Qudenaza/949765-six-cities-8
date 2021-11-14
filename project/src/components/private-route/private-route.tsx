@@ -1,10 +1,10 @@
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 
 function PrivateRoute({exact, path, component, children}: RouteProps): JSX.Element {
-  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
 
   return (
     <Route exact={exact} path={path} component={component}>

@@ -1,8 +1,9 @@
+import { toast } from 'react-toastify';
 import { ThunkActionResult } from '../types/action';
 import { ServerOffer, ServerComment, CommentPostType } from '../types/types';
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
-import { loadOffers, loadNearByOffers, loadOffer, loadComments, setAuthInfo, setAuthorization, setLogout } from './action';
+import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus } from './action';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { adaptServerOfferToClient, adaptAuthInfoToClient, adaptServerCommentToClient } from '../adapter';
 import { divideOffersByCity } from '../utils/common';
@@ -12,36 +13,46 @@ export const fetchOffersAction = (): ThunkActionResult =>
     const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
     const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
-    dispatch(loadOffers(divideOffersByCity(adaptedOffers)));
+    dispatch(setOffers(divideOffersByCity(adaptedOffers)));
   };
 
 export const fetchNearByOffersAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<ServerOffer[]>(`${APIRoute.Offers}/${id}/nearby`);
 
-    dispatch(loadNearByOffers(data.map((offer) => adaptServerOfferToClient(offer))));
+    dispatch(setNearByOffers(data.map((offer) => adaptServerOfferToClient(offer))));
+  };
+
+export const fetchFavoriteOffersAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<ServerOffer[]>(APIRoute.Favorite);
+    const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
+
+    dispatch(setFavoriteOffers(adaptedOffers));
   };
 
 export const fetchOfferAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<ServerOffer>(`${APIRoute.Offers}/${id}`);
 
-    dispatch(loadOffer(adaptServerOfferToClient(data)));
+    dispatch(setOffer(adaptServerOfferToClient(data)));
   };
 
 export const fetchCommentsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<ServerComment[]>(`${APIRoute.Comments}/${id}`);
 
-    dispatch(loadComments(data.map((comment) => adaptServerCommentToClient(comment))));
+    dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(APIRoute.Login)
       .then((response) => {
-        dispatch(setAuthorization(AuthorizationStatus.Auth));
-        dispatch(setAuthInfo(adaptAuthInfoToClient(response.data)));
+        if (response) {
+          dispatch(setAuthorization(AuthorizationStatus.Auth));
+          dispatch(setAuthInfo(adaptAuthInfoToClient(response.data)));
+        }
       });
   };
 
@@ -61,12 +72,22 @@ export const logoutAction = (): ThunkActionResult =>
 
     dropToken();
 
-    dispatch(setLogout());
+    dispatch(setLogout(AuthorizationStatus.NoAuth));
   };
 
 export const postCommentAction = (id: number, commentData: CommentPostType): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData);
-
-    dispatch(loadComments(data.map((comment) => adaptServerCommentToClient(comment))));
+    await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData)
+      .then(({ data }) => dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment)))))
+      .catch(() => toast('Не удалось отправить отзыв. Попробуйте еще раз.'));
   };
+
+export const postFavoriteStatusAction = (id: number, status: number, isSingleOffer = false): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    const { data } = await api.post(`${APIRoute.Favorite}/${id}/${status}`);
+
+    isSingleOffer && dispatch(setOffer(adaptServerOfferToClient(data)));
+
+    !isSingleOffer && dispatch(updateOfferFavoriteStatus(adaptServerOfferToClient(data)));
+  };
+

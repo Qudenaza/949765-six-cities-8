@@ -1,12 +1,13 @@
 import React, { MouseEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import cn from 'classnames';
 import { changeSelectedSortingType } from '../../store/action';
 import SortingItem from '../sorting-item/sorting-item';
 import { sortingTypes } from '../../const';
-import { getSelectedSortingType } from '../../store/app-state/selectors';
+import { selectSelectedSortingType } from '../../store/app-state/selectors';
 
 function Sorting(): JSX.Element {
-  const selectedSortingType = useSelector(getSelectedSortingType);
+  const selectedSortingType = useSelector(selectSelectedSortingType);
   const [condition, setCondition] = useState(false);
 
   const dispatch = useDispatch();
@@ -19,8 +20,6 @@ function Sorting(): JSX.Element {
     setCondition(false);
   };
 
-  const sortingListClasses = `places__options places__options--custom ${condition ? 'places__options--opened' : 'places__options--closed'}`;
-
   const sortBy = sortingTypes.find((item) => item.key === selectedSortingType);
 
   return (
@@ -32,8 +31,11 @@ function Sorting(): JSX.Element {
           <use xlinkHref="#icon-arrow-select" />
         </svg>
       </span>
-      <ul className={sortingListClasses} onClick={handleSortTypeChange}>
-        {sortingTypes.map((item) => <SortingItem selectedSortingType={selectedSortingType} dataType={item.key} key={item.title} title={item.title}/>)}
+      <ul
+        className={cn('places__options places__options--custom', {'places__options--opened': condition, 'places__options--closed': !condition})}
+        onClick={handleSortTypeChange}
+      >
+        {sortingTypes.map((item) => <SortingItem isSelected={selectedSortingType === item.key} dataType={item.key} key={item.title} title={item.title}/>)}
       </ul>
     </form>
   );
