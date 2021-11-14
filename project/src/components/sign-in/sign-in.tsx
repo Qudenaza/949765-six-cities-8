@@ -1,19 +1,23 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
-import { selectCity } from '../../store/app-state/selectors';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, cities } from '../../const';
+import { changeCity } from '../../store/action';
 
 function SignIn(): JSX.Element {
-  const city = useSelector(selectCity);
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
+  const randomCity = cities[cities.length * Math.random() | 0];
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(changeCity(randomCity));
+  }, [dispatch, randomCity]);
 
   const handleEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setEmail(evt.target.value);
@@ -59,9 +63,9 @@ function SignIn(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="./">
-              <span>{city.name}</span>
-            </a>
+            <Link to="./" className="locations__item-link">
+              <span>{randomCity.name}</span>
+            </Link>
           </div>
         </section>
       </div>
