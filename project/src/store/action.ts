@@ -74,4 +74,3 @@ export const setLogout = createAction(ActionType.SetLogout, (value: Authorizatio
     value,
   },
 }));
-

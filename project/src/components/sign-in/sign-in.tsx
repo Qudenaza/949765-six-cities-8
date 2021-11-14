@@ -52,7 +52,7 @@ function SignIn(): JSX.Element {
             </div>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
-              <input className="login__input form__input" type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange}/>
+              <input className="login__input form__input" type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange} pattern="^(?=.*[aA-zZ])(?=.*\d)[aA-zZ\d]{1,}$" />
             </div>
             <button className="login__submit form__submit button" type="submit">Sign in</button>
           </form>

@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { ThunkActionResult } from '../types/action';
 import { ServerOffer, ServerComment, CommentPostType } from '../types/types';
 import { AuthData } from '../types/auth-data';
@@ -76,9 +77,9 @@ export const logoutAction = (): ThunkActionResult =>
 
 export const postCommentAction = (id: number, commentData: CommentPostType): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData);
-
-    dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
+    await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData)
+      .then(({ data }) => dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment)))))
+      .catch(() => toast('Не удалось отправить отзыв. Попробуйте еще раз.'));
   };
 
 export const postFavoriteStatusAction = (id: number, status: number, isSingleOffer = false): ThunkActionResult =>
