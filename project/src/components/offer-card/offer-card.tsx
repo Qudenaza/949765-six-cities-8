@@ -22,7 +22,6 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
 
   const dispatch = useDispatch();
 
-
   const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
 
