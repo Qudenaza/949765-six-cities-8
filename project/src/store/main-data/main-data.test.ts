@@ -34,8 +34,8 @@ describe('Reducer: mainData', () => {
           [offer.city.name]: [{
             ...offer,
             isFavorite: !offer.isFavorite,
-          }]
-        }
+          }],
+        },
       });
   });
 });

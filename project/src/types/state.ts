@@ -21,7 +21,6 @@ export type UserProcess = {
   authInfo: AuthInfo | null,
 };
 
-
 export type AppState = {
   city: City,
   selectedSortingType: string,
