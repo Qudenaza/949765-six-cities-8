@@ -1,73 +1,38 @@
 import { appState } from './app-state';
-import { changeCity, changeSelectedSortingType } from '../action';
+import { changeLocation, changeSelectedSortingType } from '../action';
+import { locations } from '../../const';
 
 describe('Reducer: appState', () => {
   it('without additional parameters should return initial state', () => {
     expect(appState(void 0, { type: 'UNKNOWN_ACTION' }))
       .toEqual({
-        city: {
-          name: 'Paris',
-          location: {
-            latitude: 48.85661,
-            longitude: 2.351499,
-            zoom: 13,
-          },
-        },
+        location: locations[0],
         selectedSortingType: 'popular',
       });
   });
 
   it('should change city to a given value', () => {
     const state = {
-      city: {
-        name: 'Paris',
-        location: {
-          latitude: 48.85661,
-          longitude: 2.351499,
-          zoom: 13,
-        },
-      },
+      location: locations[0],
       selectedSortingType: 'popular',
     };
-    const city = {
-      name: 'Cologne',
-      location: {
-        latitude: 50.938361,
-        longitude: 6.959974,
-        zoom: 13,
-      },
-    };
 
-    expect(appState(state, changeCity(city)))
+    expect(appState(state, changeLocation(locations[1])))
       .toEqual({
-        city,
+        location: locations[1],
         selectedSortingType: 'popular',
       });
   });
 
   it('should change selecting sorting type to a given value', () => {
     const state = {
-      city: {
-        name: 'Paris',
-        location: {
-          latitude: 48.85661,
-          longitude: 2.351499,
-          zoom: 13,
-        },
-      },
+      location: locations[0],
       selectedSortingType: 'popular',
     };
 
     expect(appState(state, changeSelectedSortingType('low')))
       .toEqual({
-        city: {
-          name: 'Paris',
-          location: {
-            latitude: 48.85661,
-            longitude: 2.351499,
-            zoom: 13,
-          },
-        },
+        location: locations[0],
         selectedSortingType: 'low',
       });
   });

@@ -1,3 +1,5 @@
+import { Location } from './location';
+
 export type AuthInfo = {
   avatarUrl: string,
   email: string,
@@ -17,7 +19,7 @@ export type ServerAuthInfo = {
 };
 
 export type Offer = {
-  city: City,
+  city: Location,
   id: number,
   isFavorite: boolean,
   previewImage: string,
@@ -36,7 +38,7 @@ export type Offer = {
 };
 
 export type ServerOffer = {
-  city: City,
+  city: Location,
   id: number,
   'is_favorite': boolean,
   'preview_image': string,
@@ -56,15 +58,6 @@ export type ServerOffer = {
 
 export type GroupedByCityOffers = {
   [key: string]: Offer[],
-};
-
-export type City = {
-  name: string;
-  location: {
-    latitude: number,
-    longitude: number,
-    zoom: number,
-  }
 };
 
 export type ClientHost = {

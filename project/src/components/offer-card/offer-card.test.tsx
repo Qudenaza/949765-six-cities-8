@@ -22,7 +22,7 @@ describe('Component: OfferCard', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <OfferCard offer={fakeOffer} isNearby={false}/>
+          <OfferCard offer={fakeOffer} isNearby={false} />
         </Router>
       </Provider>,
     );

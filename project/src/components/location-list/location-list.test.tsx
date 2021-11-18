@@ -3,37 +3,29 @@ import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
-import CityList from './city-list';
-import { cities } from '../../const';
+import LocationList from './location-list';
+import { locations } from '../../const';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 
-describe('Component: CityList', () => {
+describe('Component: LocationList', () => {
   it('should render correctly', () => {
     const store = mockStore({
       APP: {
-        city: {
-          name: 'Paris',
-          location: {
-            latitude: 48.85661,
-            longitude: 2.351499,
-            zoom: 13,
-          },
-        },
+        location: locations[0],
       },
     });
 
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CityList onCityChange={jest.fn()}/>
+          <LocationList />
         </Router>
       </Provider>,
     );
 
-    cities.forEach((city) => expect(screen.getByText(city.name)).toBeInTheDocument());
-
-    expect(screen.getByText(cities[0].name).parentElement).toHaveClass('tabs__item--active');
+    expect(screen.getAllByRole('link')).toHaveLength(6);
+    expect(screen.getByText(locations[0].name).parentElement).toHaveClass('tabs__item--active');
   });
 });

@@ -6,7 +6,7 @@ import { saveToken, dropToken } from '../services/token';
 import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus } from './action';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { adaptServerOfferToClient, adaptAuthInfoToClient, adaptServerCommentToClient } from '../adapter';
-import { divideOffersByCity } from '../utils/common';
+import { divideOffersByLocation } from '../utils/common';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -14,7 +14,7 @@ export const fetchOffersAction = (): ThunkActionResult =>
       const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
       const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
-      dispatch(setOffers(divideOffersByCity(adaptedOffers)));
+      dispatch(setOffers(divideOffersByLocation(adaptedOffers)));
     } catch (error) {
       toast('Не удалось получить данные.');
     }

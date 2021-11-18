@@ -10,7 +10,7 @@ import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, s
 import { AuthData } from '../types/auth-data';
 import { makeFakeServerAuthInfo, makeFakeServerOffer, makeFakeServerComment, makeFakePostComment } from '../utils/mocks';
 import { adaptAuthInfoToClient, adaptServerOfferToClient, adaptServerCommentToClient } from '../adapter';
-import { divideOffersByCity } from '../utils/common';
+import { divideOffersByLocation } from '../utils/common';
 
 describe('Async actions', () => {
   const onFakeUnauthorized = jest.fn();
@@ -33,7 +33,7 @@ describe('Async actions', () => {
 
     await store.dispatch(fetchOffersAction());
 
-    expect(store.getActions()).toEqual([setOffers(divideOffersByCity(fakeAdaptedOffers))]);
+    expect(store.getActions()).toEqual([setOffers(divideOffersByLocation(fakeAdaptedOffers))]);
   });
   it('should dispatch SetNearByOffers when GET /hotels/:id/nearby', async () => {
     const store = mockStore();

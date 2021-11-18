@@ -1,11 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../types/action';
-import { GroupedByCityOffers, Offer, City, AuthInfo, Comment } from '../types/types';
+import { GroupedByCityOffers, Offer, AuthInfo, Comment } from '../types/types';
+import { Location } from '../types/location';
 import { AuthorizationStatus } from '../const';
 
-export const changeCity = createAction(ActionType.ChangeCity, (value: City) => ({
+export const changeLocation = createAction(ActionType.ChangeLocation, (location: Location) => ({
   payload: {
-    value,
+    location,
   },
 }));
 

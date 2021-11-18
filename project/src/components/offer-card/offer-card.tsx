@@ -11,10 +11,10 @@ import { postFavoriteStatusAction } from '../../store/api-actions';
 import { removeFromFavorites } from '../../store/action';
 
 type Props = {
-  offer: Offer,
-  isNearby: boolean,
-  onMouseEnter?: (id: number) => void,
-}
+  offer: Offer;
+  isNearby: boolean;
+  onMouseEnter?: (id: number) => void;
+};
 
 function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
   const authorizationStatus = useSelector(selectAuthorizationStatus);
@@ -47,15 +47,29 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
   };
 
   return (
-    <article className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'} onMouseEnter={mouseEnterHandler}>
+    <article
+      className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'}
+      onMouseEnter={mouseEnterHandler}
+    >
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className={cn('place-card__image-wrapper', {'near-places__image-wrapper': isNearby, 'cities__image-wrapper': !isNearby})}>
+      <div
+        className={cn('place-card__image-wrapper', {
+          'near-places__image-wrapper': isNearby,
+          'cities__image-wrapper': !isNearby,
+        })}
+      >
         <Link to={`/offer/${offer.id}`}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place"/>
+          <img
+            className="place-card__image"
+            src={offer.previewImage}
+            width="260"
+            height="200"
+            alt="Place"
+          />
         </Link>
       </div>
       <div className="place-card__info">
@@ -64,7 +78,12 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={cn('button', 'place-card__bookmark-button', {'place-card__bookmark-button--active': isFavorite})}onClick={handleFavoriteButtonClick}>
+          <button
+            className={cn('button', 'place-card__bookmark-button', {
+              'place-card__bookmark-button--active': isFavorite,
+            })}
+            onClick={handleFavoriteButtonClick}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark" />
             </svg>
@@ -73,14 +92,18 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: calculateRating(offer.rating)}}></span>
+            <span style={{ width: calculateRating(offer.rating) }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{Array.isArray(offer.type) ? offer.type.map((item) => item[0].toUpperCase() + item.slice(1)).join(', ') : offer.type[0].toUpperCase() + offer.type.slice(1)}</p>
+        <p className="place-card__type">
+          {Array.isArray(offer.type)
+            ? offer.type.map((item) => item[0].toUpperCase() + item.slice(1)).join(', ')
+            : offer.type[0].toUpperCase() + offer.type.slice(1)}
+        </p>
       </div>
     </article>
   );

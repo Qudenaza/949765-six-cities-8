@@ -6,20 +6,22 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import App from './app';
 import { makeFakeOffer, makeFakeComment, makeFakeAuthInfo } from '../../utils/mocks';
-import thunk, {ThunkDispatch} from 'redux-thunk';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 import { State } from '../../types/state';
 import { Action } from 'redux';
 import { createAPI } from '../../services/api';
-import { divideOffersByCity } from '../../utils/common';
+import { divideOffersByLocation } from '../../utils/common';
 
 const MAX_OFFERS_COUNT = 2;
 const MAX_COMMENTS_COUNT = 2;
 
 const api = createAPI(jest.fn());
 const middlewares = [thunk.withExtraArgument(api)];
-const mockStore =  configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(middlewares);
+const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(
+  middlewares,
+);
 
-const fakeCity = {
+const fakeLocation = {
   name: 'Paris',
   location: {
     latitude: 48.85661,
@@ -30,16 +32,16 @@ const fakeCity = {
 const fakeOffers = new Array(MAX_OFFERS_COUNT).fill('').map(() => {
   const offer = makeFakeOffer();
 
-  return { ...offer, city: fakeCity };
+  return { ...offer, city: fakeLocation };
 });
-const fakeOffersDividedByCity = divideOffersByCity(fakeOffers);
+const fakeOffersDividedByCity = divideOffersByLocation(fakeOffers);
 const fakeAuthInfo = makeFakeAuthInfo();
 const fakeOffer = makeFakeOffer();
 const fakeComments = new Array(MAX_COMMENTS_COUNT).fill('').map(() => makeFakeComment());
 
 const store = mockStore({
   APP: {
-    city: fakeCity,
+    location: fakeLocation,
     selectedSortingType: 'popular',
   },
   MAIN: {
@@ -81,7 +83,13 @@ describe('Application Routing', () => {
 
     expect(screen.getByText('Cities')).toBeInTheDocument();
     expect(screen.getByText('Places')).toBeInTheDocument();
-    expect(screen.getByText(`${fakeOffersDividedByCity[fakeCity.name].length} places to stay in ${fakeCity.name}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        `${fakeOffersDividedByCity[fakeLocation.name].length} places to stay in ${
+          fakeLocation.name
+        }`,
+      ),
+    ).toBeInTheDocument();
   });
 
   it('should render "SignIn" when user navigate to "/login"', () => {
