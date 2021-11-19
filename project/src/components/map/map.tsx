@@ -33,9 +33,9 @@ const createMarkers = (offers: Offer[], selectedPoint: number) =>
   );
 
 function Map({ offers, selectedPoint }: Props): JSX.Element {
-  const city = useSelector(selectLocation);
+  const location = useSelector(selectLocation);
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, location);
   const [layerGroup, setLayerGroup] = useState(
     offers && new LayerGroup(createMarkers(offers, selectedPoint)),
   );
@@ -50,15 +50,13 @@ function Map({ offers, selectedPoint }: Props): JSX.Element {
         layerGroup && layerGroup.clearLayers();
       });
 
-      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
+      map.flyTo([location.location.latitude, location.location.longitude], location.location.zoom);
 
       setLayerGroup(offers && new LayerGroup(createMarkers(offers, selectedPoint)));
 
       layerGroup && layerGroup.addTo(map);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPoint, city]);
+  }, [selectedPoint, location, offers]);
 
   return <section className="cities__map map" style={{ height: '500px' }} ref={mapRef}></section>;
 }
