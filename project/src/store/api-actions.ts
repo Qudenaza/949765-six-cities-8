@@ -6,29 +6,41 @@ import { saveToken, dropToken } from '../services/token';
 import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus } from './action';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { adaptServerOfferToClient, adaptAuthInfoToClient, adaptServerCommentToClient } from '../adapter';
-import { divideOffersByCity } from '../utils/common';
+import { divideOffersByLocation } from '../utils/common';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
-    const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
+    try {
+      const { data } = await api.get<ServerOffer[]>(APIRoute.Offers);
+      const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
-    dispatch(setOffers(divideOffersByCity(adaptedOffers)));
+      dispatch(setOffers(divideOffersByLocation(adaptedOffers)));
+    } catch (error) {
+      toast('Не удалось получить данные.');
+    }
   };
 
 export const fetchNearByOffersAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<ServerOffer[]>(`${APIRoute.Offers}/${id}/nearby`);
+    try {
+      const { data } = await api.get<ServerOffer[]>(`${APIRoute.Offers}/${id}/nearby`);
 
-    dispatch(setNearByOffers(data.map((offer) => adaptServerOfferToClient(offer))));
+      dispatch(setNearByOffers(data.map((offer) => adaptServerOfferToClient(offer))));
+    } catch (error) {
+      toast('Не удалось загрузить данные');
+    }
   };
 
 export const fetchFavoriteOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<ServerOffer[]>(APIRoute.Favorite);
-    const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
+    try {
+      const { data } = await api.get<ServerOffer[]>(APIRoute.Favorite);
+      const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
-    dispatch(setFavoriteOffers(adaptedOffers));
+      dispatch(setFavoriteOffers(adaptedOffers));
+    } catch (error) {
+      toast('Не удалось загрузить  данные');
+    }
   };
 
 export const fetchOfferAction = (id: number): ThunkActionResult =>
@@ -46,7 +58,7 @@ export const fetchCommentsAction = (id: number): ThunkActionResult =>
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
+  async (dispatch, _getState, api): Promise<void> => {
     await api.get(APIRoute.Login)
       .then((response) => {
         if (response) {
@@ -57,13 +69,17 @@ export const checkAuthAction = (): ThunkActionResult =>
   };
 
 export const loginAction = ({ email, password }: AuthData): ThunkActionResult =>
-  async (dispatch, _getState, api) => {
-    const { data } = await api.post(APIRoute.Login, { email, password });
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const { data } = await api.post(APIRoute.Login, { email, password });
 
-    saveToken(data.token);
+      saveToken(data.token);
 
-    dispatch(setAuthorization(AuthorizationStatus.Auth));
-    dispatch(setAuthInfo(adaptAuthInfoToClient(data)));
+      dispatch(setAuthorization(AuthorizationStatus.Auth));
+      dispatch(setAuthInfo(adaptAuthInfoToClient(data)));
+    } catch (error) {
+      toast('Ошибка авторизации');
+    }
   };
 
 export const logoutAction = (): ThunkActionResult =>

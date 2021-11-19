@@ -4,7 +4,7 @@ import { AxiosInstance } from 'axios';
 import { State } from './state';
 
 export enum ActionType {
-  ChangeCity = 'data/changeCity',
+  ChangeLocation = 'data/changeLocation',
   SetOffers = 'data/setOffers',
   SetNearByOffers = 'data/setNearByOffers',
   SetFavoriteOffers = 'data/setFavoriteOffers',

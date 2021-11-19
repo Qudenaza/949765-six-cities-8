@@ -1,23 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AppState } from '../../types/state';
-import { changeCity, changeSelectedSortingType } from '../action';
+import { changeLocation, changeSelectedSortingType } from '../action';
+import { locations } from '../../const';
 
 const initialState: AppState = {
-  city: {
-    name: 'Paris',
-    location: {
-      latitude: 48.85661,
-      longitude: 2.351499,
-      zoom: 13,
-    },
-  },
+  location: locations[0],
   selectedSortingType: 'popular',
 };
 
 const appState = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action) => {
-      state.city = action.payload.value;
+    .addCase(changeLocation, (state, action) => {
+      state.location = action.payload.location;
     })
     .addCase(changeSelectedSortingType, (state, action) => {
       state.selectedSortingType = action.payload.value;

@@ -4,7 +4,7 @@ export const calculateRating = (rating: number): string => `${Math.round(rating)
 
 export const capitalize = (value: string): string => value[0].toUpperCase() + value.slice(1);
 
-export const divideOffersByCity = (offers: Offer[]): GroupedByCityOffers => {
+export const divideOffersByLocation = (offers: Offer[]): GroupedByCityOffers => {
   const dividedOffers: GroupedByCityOffers = {};
 
   offers.forEach((offer) => {

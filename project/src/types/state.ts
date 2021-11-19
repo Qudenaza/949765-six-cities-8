@@ -1,4 +1,5 @@
-import { GroupedByCityOffers, Offer, City, AuthInfo, Comment } from './types';
+import { GroupedByCityOffers, Offer, AuthInfo, Comment } from './types';
+import { Location } from './location';
 import { RootState } from '../store/root-reducer';
 import { AuthorizationStatus } from '../const';
 
@@ -21,9 +22,8 @@ export type UserProcess = {
   authInfo: AuthInfo | null,
 };
 
-
 export type AppState = {
-  city: City,
+  location: Location,
   selectedSortingType: string,
 };
 

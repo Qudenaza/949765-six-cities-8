@@ -3,8 +3,6 @@ import { useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ReviewRating from '../review-rating/review-rating';
 import { postCommentAction } from '../../../store/api-actions';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const ratings = [
   {
@@ -78,7 +76,6 @@ function ReviewForm(): JSX.Element {
         </p>
         <button className="reviews__submit form__submit button" disabled={comment.length < 50 || rating === 0}>Submit</button>
       </div>
-      <ToastContainer />
     </form>
   );
 }

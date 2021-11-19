@@ -1,4 +1,4 @@
-import { City } from './types/types';
+import { Location } from './types/location';
 
 export enum AppRoute {
   Root = '/',
@@ -41,7 +41,7 @@ export const sortingTypes = [
   },
 ];
 
-export const cities: City[] = [
+export const locations: Location[] = [
   {
     name: 'Paris',
     location: {
