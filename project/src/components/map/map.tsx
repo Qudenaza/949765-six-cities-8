@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 import { Offer } from '../../types/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import { Icon, Marker, LayerGroup } from 'leaflet';
@@ -36,9 +36,7 @@ function Map({ offers, selectedPoint }: Props): JSX.Element {
   const location = useSelector(selectLocation);
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
-  const [layerGroup, setLayerGroup] = useState(
-    offers && new LayerGroup(createMarkers(offers, selectedPoint)),
-  );
+  const [layerGroup, setLayerGroup] = useState(offers && new LayerGroup(createMarkers(offers, selectedPoint)));
 
   if (map) {
     layerGroup && layerGroup.addTo(map);
@@ -56,6 +54,8 @@ function Map({ offers, selectedPoint }: Props): JSX.Element {
 
       layerGroup && layerGroup.addTo(map);
     }
+
+    // eslint-disable-next-line
   }, [selectedPoint, location, offers]);
 
   return <section className="cities__map map" style={{ height: '500px' }} ref={mapRef}></section>;
@@ -63,6 +63,5 @@ function Map({ offers, selectedPoint }: Props): JSX.Element {
 
 export default React.memo(
   Map,
-  (prevProps, nextProps) =>
-    prevProps.offers === nextProps.offers && prevProps.selectedPoint === nextProps.selectedPoint,
+  (prevProps, nextProps) => prevProps.offers === nextProps.offers && prevProps.selectedPoint === nextProps.selectedPoint,
 );
