@@ -20,7 +20,7 @@ function Offer(): JSX.Element {
   const nearByOffers = useSelector(selectNearByOffers);
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [isFavorite, setIsFavorite] = useState(offer && offer.isFavorite ? 1 : 0);
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
 
   const dispatch = useDispatch();
 
@@ -28,9 +28,7 @@ function Offer(): JSX.Element {
     dispatch(fetchOfferAction(+id));
     dispatch(fetchCommentsAction(+id));
     dispatch(fetchNearByOffersAction(+id));
-
-    // eslint-disable-next-line
-  }, [id]);
+  }, [id, dispatch]);
 
   const handleFavoriteButtonClick = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
@@ -46,7 +44,6 @@ function Offer(): JSX.Element {
     }
   };
 
-
   if (!offer || offer.id !== +id) {
     return <LoadingScreen />;
   }
@@ -60,7 +57,7 @@ function Offer(): JSX.Element {
             <div className="property__gallery">
               {offer.images.slice(0, 6).map((image) => (
                 <div className="property__image-wrapper" key={`${image}-${Math.random()}`}>
-                  <img className="property__image" src={image} alt="Studio"/>
+                  <img className="property__image" src={image} alt="Studio" />
                 </div>
               ))}
             </div>
@@ -74,7 +71,13 @@ function Offer(): JSX.Element {
               )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{offer.title}</h1>
-                <button className={cn('button', 'property__bookmark-button', {'property__bookmark-button--active': offer.isFavorite})} onClick={handleFavoriteButtonClick} type="button">
+                <button
+                  className={cn('button', 'property__bookmark-button', {
+                    'property__bookmark-button--active': offer.isFavorite,
+                  })}
+                  onClick={handleFavoriteButtonClick}
+                  type="button"
+                >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
@@ -83,7 +86,7 @@ function Offer(): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: calculateRating(offer.rating)}}></span>
+                  <span style={{ width: calculateRating(offer.rating) }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">{offer.rating}</span>
@@ -100,13 +103,21 @@ function Offer(): JSX.Element {
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {offer.goods.map((good) => <li className="property__inside-item" key={good}>{good}</li>)}
+                  {offer.goods.map((good) => (
+                    <li className="property__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
-                  <div className={cn('property__avatar-wrapper', 'user__avatar-wrapper', {'property__avatar-wrapper--pro': offer.host.isPro})}>
+                  <div
+                    className={cn('property__avatar-wrapper', 'user__avatar-wrapper', {
+                      'property__avatar-wrapper--pro': offer.host.isPro,
+                    })}
+                  >
                     <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host" />
                   </div>
                   <span className="property__user-name">{offer.host.name}</span>
@@ -116,15 +127,15 @@ function Offer(): JSX.Element {
                   <p className="property__text">{offer.description}</p>
                 </div>
               </div>
-              {comments && <Review comments={comments}/>}
+              {comments && <Review comments={comments} />}
             </div>
           </div>
-          <Map offers={nearByOffers && nearByOffers.concat(offer)} selectedPoint={+id}/>
+          <Map offers={nearByOffers && nearByOffers.concat(offer)} selectedPoint={+id} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {nearByOffers && <OfferList offers={nearByOffers} isNearby/>}
+            {nearByOffers && <OfferList offers={nearByOffers} isNearby />}
           </section>
         </div>
       </main>

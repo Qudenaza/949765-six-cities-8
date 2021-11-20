@@ -45,27 +45,36 @@ export const fetchFavoriteOffersAction = (): ThunkActionResult =>
 
 export const fetchOfferAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<ServerOffer>(`${APIRoute.Offers}/${id}`);
+    try {
+      const { data } = await api.get<ServerOffer>(`${APIRoute.Offers}/${id}`);
 
-    dispatch(setOffer(adaptServerOfferToClient(data)));
+      dispatch(setOffer(adaptServerOfferToClient(data)));
+    } catch {
+      toast('Не удалось получить данные.');
+    }
   };
 
 export const fetchCommentsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<ServerComment[]>(`${APIRoute.Comments}/${id}`);
+    try {
+      const { data } = await api.get<ServerComment[]>(`${APIRoute.Comments}/${id}`);
 
-    dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
+      dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
+    } catch {
+      toast('Не удалось получить данные.');
+    }
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    await api.get(APIRoute.Login)
-      .then((response) => {
-        if (response) {
-          dispatch(setAuthorization(AuthorizationStatus.Auth));
-          dispatch(setAuthInfo(adaptAuthInfoToClient(response.data)));
-        }
-      });
+    try {
+      const {data} = await api.get(APIRoute.Login);
+
+      dispatch(setAuthorization(AuthorizationStatus.Auth));
+      dispatch(setAuthInfo(adaptAuthInfoToClient(data)));
+    } catch {
+      dispatch(setAuthorization(AuthorizationStatus.NoAuth));
+    }
   };
 
 export const loginAction = ({ email, password }: AuthData): ThunkActionResult =>
@@ -93,17 +102,25 @@ export const logoutAction = (): ThunkActionResult =>
 
 export const postCommentAction = (id: number, commentData: CommentPostType): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData)
-      .then(({ data }) => dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment)))))
-      .catch(() => toast('Не удалось отправить отзыв. Попробуйте еще раз.'));
+    try {
+      const { data } = await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData);
+
+      dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
+    } catch {
+      toast('Не удалось отправить отзыв. Попробуйте еще раз.');
+    }
   };
 
 export const postFavoriteStatusAction = (id: number, status: number, isSingleOffer = false): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.post(`${APIRoute.Favorite}/${id}/${status}`);
+    try {
+      const { data } = await api.post(`${APIRoute.Favorite}/${id}/${status}`);
 
-    isSingleOffer && dispatch(setOffer(adaptServerOfferToClient(data)));
+      isSingleOffer && dispatch(setOffer(adaptServerOfferToClient(data)));
 
-    !isSingleOffer && dispatch(updateOfferFavoriteStatus(adaptServerOfferToClient(data)));
+      !isSingleOffer && dispatch(updateOfferFavoriteStatus(adaptServerOfferToClient(data)));
+    } catch {
+      toast('Не удалось выполнить действие.');
+    }
   };
 

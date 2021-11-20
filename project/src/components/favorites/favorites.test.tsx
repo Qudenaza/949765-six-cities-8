@@ -1,16 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { Action } from 'redux';
 import thunk, { ThunkDispatch } from 'redux-thunk';
-import { Router } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../services/api';
 import Favorites from './favorites';
-import { makeFakeServerOffer } from '../../utils/mocks';
+import { makeFakeOffer } from '../../utils/mocks';
 import { AuthorizationStatus, locations } from '../../const';
-import { adaptServerOfferToClient } from '../../adapter';
-import { fetchFavoriteOffersAction } from '../../store/api-actions';
 import { State } from '../../types/state';
 
 const MAX_OFFERS_COUNT = 2;
@@ -25,33 +23,33 @@ describe('Component: Favorites', () => {
   const history = createMemoryHistory();
 
   it('should render correctly when there is favorite offers', async () => {
-    const fakeOffersFromServer = new Array(MAX_OFFERS_COUNT).fill('').map(() => {
-      const offer = makeFakeServerOffer();
+    const fakeOffers = new Array(MAX_OFFERS_COUNT).fill('').map(() => {
+      const offer = makeFakeOffer();
 
       return {
         ...offer,
         city: locations[0],
-        // prettier-ignore
-        'is_favorite': true,
+        isFavorite: true,
       };
     });
-    const fakeAdaptedOffers = fakeOffersFromServer.map((offer) => adaptServerOfferToClient(offer));
 
     const store = mockStore({
       USER: {
         authorizationStatus: AuthorizationStatus.Auth,
       },
       FAVORITE: {
-        favoriteOffers: fakeAdaptedOffers,
+        favoriteOffers: fakeOffers,
       },
     });
 
-    await store.dispatch(fetchFavoriteOffersAction());
+    history.push('/favorites');
 
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Favorites />
+          <Route path="/favorites" exact>
+            <Favorites />
+          </Route>
         </Router>
       </Provider>,
     );
@@ -71,12 +69,14 @@ describe('Component: Favorites', () => {
       },
     });
 
-    await store.dispatch(fetchFavoriteOffersAction());
+    history.push('/favorites');
 
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Favorites />
+          <Route path="/favorites" exact>
+            <Favorites />
+          </Route>
         </Router>
       </Provider>,
     );
