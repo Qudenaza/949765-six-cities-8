@@ -17,9 +17,7 @@ const MAX_COMMENTS_COUNT = 2;
 
 const api = createAPI(jest.fn());
 const middlewares = [thunk.withExtraArgument(api)];
-const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(
-  middlewares,
-);
+const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(middlewares);
 
 const fakeLocation = {
   name: 'Paris',
@@ -46,6 +44,7 @@ const store = mockStore({
   },
   MAIN: {
     offers: fakeOffersDividedByCity,
+    isDataLoaded: true,
   },
   FAVORITE: {
     favoriteOffers: new Array(2).fill('').map(() => {
@@ -83,13 +82,7 @@ describe('Application Routing', () => {
 
     expect(screen.getByText('Cities')).toBeInTheDocument();
     expect(screen.getByText('Places')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `${fakeOffersDividedByCity[fakeLocation.name].length} places to stay in ${
-          fakeLocation.name
-        }`,
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByText(`${fakeOffersDividedByCity[fakeLocation.name].length} places to stay in ${fakeLocation.name}`)).toBeInTheDocument();
   });
 
   it('should render "SignIn" when user navigate to "/login"', () => {

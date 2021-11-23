@@ -19,9 +19,7 @@ describe('Component: Main', () => {
   const onFakeUnauthorized = jest.fn();
   const api = createAPI(onFakeUnauthorized());
   const middlewares = [thunk.withExtraArgument(api)];
-  const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(
-    middlewares,
-  );
+  const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(middlewares);
   const history = createMemoryHistory();
 
   it('should render correctly when there is offers', async () => {
@@ -45,6 +43,7 @@ describe('Component: Main', () => {
       },
       MAIN: {
         offers: groupedByCityOffers,
+        isDataLoaded: true,
       },
     });
 
@@ -60,11 +59,7 @@ describe('Component: Main', () => {
 
     expect(screen.getByText('Places')).toBeInTheDocument();
     expect(screen.getByText('Cities')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `${groupedByCityOffers[locations[0].name].length} places to stay in ${locations[0].name}`,
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByText(`${groupedByCityOffers[locations[0].name].length} places to stay in ${locations[0].name}`)).toBeInTheDocument();
   });
 
   it('should render correctly when there is no offers', async () => {

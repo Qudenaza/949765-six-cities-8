@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFavoriteOffersAction } from '../../store/api-actions';
 import { selectFavoriteOffers } from '../../store/favorite-data/selectors';
+import cn from 'classnames';
 import Header from '../header/header';
 import FavoriteList from './favorite-list/favorite-list';
 import Footer from '../footer/footer';
@@ -16,9 +17,9 @@ function Favorites(): JSX.Element {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="page">
       <Header />
-      <main className="page__main page__main--favorites">
+      <main className={cn('page__main', 'page__main--favorites', { 'page__main--favorites-empty': !favoriteOffers.length })}>
         <div className="page__favorites-container container">
           {favoriteOffers.length ? (
             <section className="favorites">
@@ -30,16 +31,14 @@ function Favorites(): JSX.Element {
               <h1 className="visually-hidden">Favorites (empty)</h1>
               <div className="favorites__status-wrapper">
                 <b className="favorites__status">Nothing yet saved.</b>
-                <p className="favorites__status-description">
-                  Save properties to narrow down search or plan your future trips.
-                </p>
+                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
               </div>
             </section>
           )}
         </div>
       </main>
-      <Footer />
-    </>
+      <Footer container={!!favoriteOffers.length} />
+    </div>
   );
 }
 

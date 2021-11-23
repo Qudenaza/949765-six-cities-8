@@ -1,8 +1,13 @@
+import cn from 'classnames';
 import PageLogo from '../page-logo/page-logo';
 
-function Footer(): JSX.Element {
+type Props = {
+  container?: boolean;
+};
+
+function Footer({ container }: Props): JSX.Element {
   return (
-    <footer className="footer">
+    <footer className={cn('footer', { container: container })}>
       <PageLogo />
     </footer>
   );

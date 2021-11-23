@@ -40,6 +40,13 @@ export const updateOfferFavoriteStatus = createAction(ActionType.UpdateOfferFavo
   },
 }));
 
+export const setLoadingStatus = createAction(ActionType.SetLoadingStatus, (status: boolean) => ({
+  payload: {
+    status,
+  },
+}));
+
+
 export const setOffer = createAction(ActionType.SetOffer, (value: Offer) => ({
   payload: {
     value,

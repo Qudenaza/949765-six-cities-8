@@ -1,3 +1,4 @@
+
 import { Offer, ServerOffer, Comment, ServerComment, AuthInfo, ServerAuthInfo, CommentPostType } from '../types/types';
 import { address, datatype, date, image, lorem, name, internet } from 'faker';
 
@@ -21,7 +22,7 @@ export const makeFakeOffer = (): Offer => ({
   rating: datatype.number(5),
   bedrooms: datatype.number(5),
   description: lorem.paragraphs(1),
-  images: new Array(datatype.number(10)).fill('').map((item) => image.imageUrl()),
+  images: [],
   host: {
     id: datatype.number(1000),
     name: `${name.firstName()} ${name.lastName()}`,
@@ -55,7 +56,7 @@ export const makeFakeServerOffer = (): ServerOffer => ({
   rating: datatype.number(5),
   bedrooms: datatype.number(5),
   description: lorem.paragraphs(1),
-  images: new Array(datatype.number(10)).fill('').map((item) => image.imageUrl()),
+  images: [],
   host: {
     id: datatype.number(1000),
     name: `${name.firstName()} ${name.lastName()}`,
