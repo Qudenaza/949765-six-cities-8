@@ -12,6 +12,7 @@ export enum ActionType {
   UpdateOfferFavoriteStatus = 'data/updateOfferFavoriteStatus',
   SetOffer = 'data/setOffer',
   SetComments = 'data/setComments',
+  SetLoadingStatus = 'data/setLoadingStatus',
   ChangeSelectedSortingType = 'app/changeSelectedSortingType',
   SetAuthorization = 'user/setAuthorization',
   SetLogout = 'user/setLogout',

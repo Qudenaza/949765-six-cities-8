@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useMap from '../../hooks/use-map';
 import { Offer } from '../../types/types';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import { URL_MARKER } from '../../const';
 import { Icon, Marker, LayerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { selectLocation } from '../../store/app-state/selectors';
@@ -13,13 +13,13 @@ type Props = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
+  iconUrl: URL_MARKER.DEFAULT || URL_MARKER.FALLBACK_DEFAULT,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: URL_MARKER.ACTIVE || URL_MARKER.FALLBACK_ACTIVE,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });

@@ -8,12 +8,14 @@ import Map from '../map/map';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { selectLocation } from '../../store/app-state/selectors';
-import { selectOffers } from '../../store/main-data/selectors';
+import { selectDataLoadedStatus, selectOffers } from '../../store/main-data/selectors';
 import { fetchOffersAction } from '../../store/api-actions';
+import cn from 'classnames';
 
 function Main(): JSX.Element {
   const city = useSelector(selectLocation);
   const offers = useSelector(selectOffers(city.name));
+  const isDataLoaded = useSelector(selectDataLoadedStatus);
   const [activeCardId, setActiveCardId] = useState(Infinity);
 
   const dispatch = useDispatch();
@@ -22,14 +24,14 @@ function Main(): JSX.Element {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  if (!offers) {
+  if (!isDataLoaded) {
     return <LoadingScreen />;
   }
 
   return (
-    <>
+    <div className="page page--gray page--main">
       <Header />
-      <main className="page__main page__main--index">
+      <main className={cn('page__main', 'page__main--index', { 'page__main--index-empty': !offers })}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -55,7 +57,7 @@ function Main(): JSX.Element {
           {!offers && <MainEmpty />}
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

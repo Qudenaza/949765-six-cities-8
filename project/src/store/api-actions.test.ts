@@ -6,7 +6,7 @@ import { createAPI } from '../services/api';
 import { fetchOffersAction, fetchNearByOffersAction, fetchFavoriteOffersAction, fetchOfferAction, fetchCommentsAction, checkAuthAction, loginAction, logoutAction, postCommentAction, postFavoriteStatusAction } from './api-actions';
 import { State } from '../types/state';
 import { APIRoute, AuthorizationStatus } from '../const';
-import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus } from './action';
+import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus, setLoadingStatus } from './action';
 import { AuthData } from '../types/auth-data';
 import { makeFakeServerAuthInfo, makeFakeServerOffer, makeFakeServerComment, makeFakePostComment } from '../utils/mocks';
 import { adaptAuthInfoToClient, adaptServerOfferToClient, adaptServerCommentToClient } from '../adapter';
@@ -20,7 +20,7 @@ describe('Async actions', () => {
 
   const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(middlewares);
 
-  it('should dispatch SetOffers when GET /hotels', async () => {
+  it('should dispatch SetOffers and SetLoadingStatus when GET /hotels', async () => {
     const store = mockStore();
     const fakeOffersFromServer = [makeFakeServerOffer()];
     const fakeAdaptedOffers = fakeOffersFromServer.map((offer) => adaptServerOfferToClient(offer));
@@ -33,7 +33,7 @@ describe('Async actions', () => {
 
     await store.dispatch(fetchOffersAction());
 
-    expect(store.getActions()).toEqual([setOffers(divideOffersByLocation(fakeAdaptedOffers))]);
+    expect(store.getActions()).toEqual([setOffers(divideOffersByLocation(fakeAdaptedOffers)), setLoadingStatus(true)]);
   });
   it('should dispatch SetNearByOffers when GET /hotels/:id/nearby', async () => {
     const store = mockStore();

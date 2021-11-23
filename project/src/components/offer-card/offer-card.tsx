@@ -13,16 +13,17 @@ import { removeFromFavorites } from '../../store/action';
 type Props = {
   offer: Offer;
   isNearby: boolean;
+  isFavoritePage?: boolean;
   onMouseEnter?: (id: number) => void;
 };
 
-function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
+function OfferCard({ offer, isNearby, isFavoritePage = false, onMouseEnter }: Props): JSX.Element {
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [isFavorite, setIsFavorite] = useState(offer.isFavorite ? 1 : 0);
 
   const dispatch = useDispatch();
 
-  const mouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
+  const handleMouseEnter = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
 
     if (onMouseEnter) {
@@ -48,10 +49,15 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
 
   return (
     <article
-      className={isNearby ? 'near-places__card place-card' : 'cities__place-card place-card'}
-      onMouseEnter={mouseEnterHandler}
+      className={cn('place-card', {
+        'near-places__card': isNearby,
+        // prettier-ignore
+        'favorites__card': isFavoritePage,
+        'cities__place-card': !isNearby && !isFavoritePage,
+      })}
+      onMouseEnter={handleMouseEnter}
     >
-      {offer.isPremium && (
+      {offer.isPremium && !isNearby && !isFavoritePage && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -59,20 +65,21 @@ function OfferCard({ offer, isNearby, onMouseEnter }: Props): JSX.Element {
       <div
         className={cn('place-card__image-wrapper', {
           'near-places__image-wrapper': isNearby,
-          'cities__image-wrapper': !isNearby,
+          'favorites__image-wrapper': isFavoritePage,
+          'cities__image-wrapper': !isNearby && !isFavoritePage,
         })}
       >
         <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"
             src={offer.previewImage}
-            width="260"
-            height="200"
+            width={isFavoritePage ? '150' : '260'}
+            height={isFavoritePage ? '110' : '200'}
             alt="Place"
           />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={cn('place-card__info', { 'favorites__card-info': isFavoritePage })}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>

@@ -3,7 +3,7 @@ import { ThunkActionResult } from '../types/action';
 import { ServerOffer, ServerComment, CommentPostType } from '../types/types';
 import { AuthData } from '../types/auth-data';
 import { saveToken, dropToken } from '../services/token';
-import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus } from './action';
+import { setOffers, setNearByOffers, setFavoriteOffers, setOffer, setComments, setAuthInfo, setAuthorization, setLogout, updateOfferFavoriteStatus, setLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { adaptServerOfferToClient, adaptAuthInfoToClient, adaptServerCommentToClient } from '../adapter';
 import { divideOffersByLocation } from '../utils/common';
@@ -15,8 +15,14 @@ export const fetchOffersAction = (): ThunkActionResult =>
       const adaptedOffers = data.map((offer) => adaptServerOfferToClient(offer));
 
       dispatch(setOffers(divideOffersByLocation(adaptedOffers)));
+
+      dispatch(setLoadingStatus(true));
     } catch (error) {
-      toast('Не удалось получить данные.');
+      dispatch(setOffers(divideOffersByLocation([])));
+
+      dispatch(setLoadingStatus(true));
+
+      toast.error('Не удалось загрузить данные');
     }
   };
 
@@ -27,7 +33,7 @@ export const fetchNearByOffersAction = (id: number): ThunkActionResult =>
 
       dispatch(setNearByOffers(data.map((offer) => adaptServerOfferToClient(offer))));
     } catch (error) {
-      toast('Не удалось загрузить данные');
+      toast.error('Не удалось загрузить данные');
     }
   };
 
@@ -39,18 +45,24 @@ export const fetchFavoriteOffersAction = (): ThunkActionResult =>
 
       dispatch(setFavoriteOffers(adaptedOffers));
     } catch (error) {
-      toast('Не удалось загрузить  данные');
+      toast.error('Не удалось загрузить  данные');
     }
   };
 
 export const fetchOfferAction = (id: number): ThunkActionResult =>
-  async (dispatch, _getState, api): Promise<void> => {
+  async (dispatch, getState, api): Promise<void> => {
     try {
       const { data } = await api.get<ServerOffer>(`${APIRoute.Offers}/${id}`);
 
       dispatch(setOffer(adaptServerOfferToClient(data)));
     } catch {
-      toast('Не удалось получить данные.');
+      dispatch(fetchOffersAction()).then(() => {
+        const city = getState().APP.location.name;
+        const offer = getState().MAIN.offers[city].find((item) => item.id === id);
+
+        // eslint-disable-next-line
+        dispatch(setOffer(offer!));
+      });
     }
   };
 
@@ -61,7 +73,7 @@ export const fetchCommentsAction = (id: number): ThunkActionResult =>
 
       dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
     } catch {
-      toast('Не удалось получить данные.');
+      toast.error('Не удалось загрузить данные.');
     }
   };
 
@@ -102,13 +114,9 @@ export const logoutAction = (): ThunkActionResult =>
 
 export const postCommentAction = (id: number, commentData: CommentPostType): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    try {
-      const { data } = await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData);
+    const { data } = await api.post<ServerComment[]>(`${APIRoute.Comments}/${id}`, commentData);
 
-      dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
-    } catch {
-      toast('Не удалось отправить отзыв. Попробуйте еще раз.');
-    }
+    dispatch(setComments(data.map((comment) => adaptServerCommentToClient(comment))));
   };
 
 export const postFavoriteStatusAction = (id: number, status: number, isSingleOffer = false): ThunkActionResult =>

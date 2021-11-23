@@ -23,10 +23,7 @@ function FavoriteList({ favoriteOffers }: Props): JSX.Element {
           </div>
           <div className="favorites__places">
             {favoriteOffers.map(
-              (offer) =>
-                offer.city.name === location && (
-                  <OfferCard key={offer.id} isNearby={false} offer={offer} />
-                ),
+              (offer) => offer.city.name === location && <OfferCard key={offer.id} isNearby={false} offer={offer} isFavoritePage />,
             )}
           </div>
         </li>

@@ -6,11 +6,11 @@ import { AuthorizationStatus } from '../../const';
 import { AuthInfo } from '../../types/types';
 
 type Props = {
-  authorizationStatus: string,
-  authInfo: AuthInfo | null,
+  authorizationStatus: string;
+  authInfo: AuthInfo | null;
 };
 
-function UserBlock({authorizationStatus, authInfo}: Props): JSX.Element {
+function UserBlock({ authorizationStatus, authInfo }: Props): JSX.Element {
   const dispatch = useDispatch();
 
   const handleLogout = (evt: MouseEvent<HTMLAnchorElement>) => {
@@ -24,8 +24,7 @@ function UserBlock({authorizationStatus, authInfo}: Props): JSX.Element {
       <ul className="header__nav-list">
         <li className="header__nav-item user">
           <Link to="/login" className="header__nav-link header__nav-link--profile">
-            <div className="header__avatar-wrapper user__avatar-wrapper">
-            </div>
+            <div className="header__avatar-wrapper user__avatar-wrapper"></div>
             <span className="header__login">Sign in</span>
           </Link>
         </li>
@@ -38,7 +37,7 @@ function UserBlock({authorizationStatus, authInfo}: Props): JSX.Element {
       <li className="header__nav-item user">
         <Link to="/favorites" className="header__nav-link header__nav-link--profile">
           <div className="header__avatar-wrapper user__avatar-wrapper">
-            <img src={authInfo ? authInfo.avatarUrl : '#'} alt="Аватар пользователя" width="20" height="20"/>
+            <img src={authInfo ? authInfo.avatarUrl : '#'} alt="Аватар пользователя" width="20" height="20" />
           </div>
           <span className="header__user-name user__name">{authInfo && authInfo.email}</span>
         </Link>
@@ -53,4 +52,3 @@ function UserBlock({authorizationStatus, authInfo}: Props): JSX.Element {
 }
 
 export default UserBlock;
-

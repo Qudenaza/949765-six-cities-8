@@ -1,10 +1,11 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { MainData } from '../../types/state';
-import { setOffers, updateOfferFavoriteStatus } from '../action';
+import { setOffers, updateOfferFavoriteStatus, setLoadingStatus } from '../action';
 
 const initialState: MainData = {
   offers: {},
+  isDataLoaded: false,
 };
 
 const mainData = createReducer(initialState, (builder) => {
@@ -30,6 +31,9 @@ const mainData = createReducer(initialState, (builder) => {
         ...state.offers,
         [city]: updatedOffers,
       };
+    })
+    .addCase(setLoadingStatus, (state, action) => {
+      state.isDataLoaded = action.payload.status;
     });
 });
 
